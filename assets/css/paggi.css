@@ -1,0 +1,49 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : Apr 20, 2017, 10:31:30 AM
+    Author     : casen
+*/
+
+.ccdiv, .submit{
+    margin: 10px;
+}
+.progressbar {
+    display:    none;
+    position:   fixed;
+    z-index:    1000;
+    top:        0;
+    left:       0;
+    height:     100%;
+    width:      100%;
+    background: rgba( 255, 255, 255, .8 ) 
+        url('../images/ajax-loader.gif') 
+        50% 50% 
+        no-repeat;
+    text-align: 50%;
+    vertical-align: 50%;
+}
+
+.success_msg{
+    border-color: green;
+    border-width: 1px 1px 1px 5px;
+    border-style: solid;
+    padding-left: 5px;
+}
+.error_msg{
+    border-color: red;
+    border-width: 1px 1px 1px 5px;
+    border-style: solid;
+    padding-left: 5px;
+}
+.hide{
+    display: none !important;
+}
+.cc{
+    width: 50%;
+    margin-left: 25%;
+}
+

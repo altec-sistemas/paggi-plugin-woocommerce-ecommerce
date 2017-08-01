@@ -1,0 +1,456 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Woocommerce Paggi\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2017-04-26 13:46+0000\n"
+"PO-Revision-Date: 2017-04-26 13:47+0000\n"
+"Last-Translator: Cássio Vidal <cassio@cassiovidal.com>\n"
+"Language-Team: Portuguese (Brazil)\n"
+"Language: pt-BR\n"
+"Plural-Forms: nplurals=2; plural=n != 1\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Loco - https://localise.biz/"
+
+#: woocommerce-paggi.php:51
+msgid ""
+"For the correct operation of the plugin WooCommerce - Paggi you need enable "
+"the extension PHP CURL."
+msgstr ""
+"Para a correta operação do plugin WooCommerce - Paggi você precisa ter a "
+"extensão php CURL ativada."
+
+#. Name of the plugin
+msgid "WooCommerce Paggi"
+msgstr "WooCommerce Paggi"
+
+#: woocommerce-paggi.php:44
+msgid ""
+"For the correct operation of the plugin WooCommerce - Paggi you need the "
+"plugin WooCommerce."
+msgstr ""
+"Para a correta operação do plugin WooCommerce - Paggi você precisa do plugin "
+"WooCommerce."
+
+#: woocommerce-paggi.php:48
+msgid ""
+"For the correct operation of the plugin WooCommerce - Paggi you need the "
+"plugin WooCommerce Extra Checkout Fields for Brazil."
+msgstr ""
+"Para a correta operação do plugin WooCommerce - Paggi você precisa do plugin "
+"WooCommerce Extra Checkout Fields for Brazil."
+
+#: includes/class-wc-paggi-api.php:104
+msgid "Something went wrong. Often a required param is missing"
+msgstr "Algo deu errado. Um parâmetro necessário está ausente"
+
+#: includes/class-wc-paggi-api.php:111
+msgid "Not a valid API Key"
+msgstr "API token é invalido"
+
+#: includes/class-wc-paggi-api.php:118
+msgid "Params were right, but something failed, also used to rejected charges"
+msgstr ""
+"Os parametros estão corretos, mas alguma coisa deu errado, mudanças "
+"rejeitadas"
+
+#: includes/class-wc-paggi-api.php:130
+msgid "Requested item doesn't exists"
+msgstr "Item solicitado não existe"
+
+#: includes/class-wc-paggi-api.php:137
+msgid "Some param is invalid"
+msgstr "Algum parâmetro está invalido"
+
+#: includes/class-wc-paggi-api.php:144
+msgid "Something went wrong on our servers"
+msgstr "Ocorreu algum erro em nossos servidores"
+
+#: includes/class-wc-paggi-api.php:151
+msgid "Feature not available yet"
+msgstr "Função não disponível ainda. "
+
+#: includes/class-wc-paggi-api.php:157 includes/class-wc-paggi-api.php:158
+msgid "Not Available"
+msgstr "Não disponível"
+
+#: includes/class-wc-paggi-api.php:295
+msgid "Card deleted successfuly."
+msgstr "Cartão excluído com sucesso"
+
+#: includes/class-wc-paggi-api.php:297 includes/class-wc-paggi-api.php:352
+msgid "An error has occurred. Try Again"
+msgstr "Um erro ocorreu. Tente novamente"
+
+#: includes/class-wc-paggi-api.php:348
+#, php-format
+msgid "Paggi: Transaction was canceled (id = %s.)"
+msgstr "Paggi: Transação foi cancelada (id = %s)"
+
+#: includes/class-wc-paggi-api.php:350
+msgid "Payment was canceled successfuly."
+msgstr "Pagamento foi cancelado com sucesso."
+
+#: includes/class-wc-paggi-gateway.php:20
+msgid "Paggi"
+msgstr "Paggi"
+
+#: includes/class-wc-paggi-gateway.php:21
+msgid "Accept payments by credit card using the Paggi."
+msgstr "Aceite pagamento por cartão de crédito usando o Paggi"
+
+#: includes/class-wc-paggi-gateway.php:22
+msgid "Proceed to payment"
+msgstr ""
+"Prossiga para o pagamento\n"
+
+#: includes/class-wc-paggi-gateway.php:71
+msgid "General"
+msgstr "Geral"
+
+#: includes/class-wc-paggi-gateway.php:76
+msgid "Enable/Disable"
+msgstr ""
+"\n"
+"Habilitar/Desabilitar"
+
+#: includes/class-wc-paggi-gateway.php:78
+msgid "Enable Paggi Payment"
+msgstr "Habilitar pagamento pelo Paggi"
+
+#: includes/class-wc-paggi-gateway.php:82
+msgid "Title"
+msgstr "Título"
+
+#: includes/class-wc-paggi-gateway.php:84
+msgid ""
+"This controls the title for the payment method the customer sees during "
+"checkout."
+msgstr ""
+"Isso controla o título do método de pagamento que o cliente vê durante o "
+"checkout."
+
+#: includes/class-wc-paggi-gateway.php:85
+msgid "Paggi Payment"
+msgstr "Paggi Payment"
+
+#: includes/class-wc-paggi-gateway.php:89
+msgid "Description"
+msgstr "Descrição"
+
+#: includes/class-wc-paggi-gateway.php:91
+msgid "Payment method description that the customer will see on your checkout."
+msgstr "Descrição do método de pagamento que o cliente verá na sua conta."
+
+#: includes/class-wc-paggi-gateway.php:92
+msgid "Please remit payment to Store Name upon pickup or delivery."
+msgstr ""
+"Por favor, envie o pagamento para o Nome da Loja no momento da coleta ou "
+"entrega."
+
+#: includes/class-wc-paggi-gateway.php:96
+msgid "Instructions"
+msgstr "Instruções"
+
+#: includes/class-wc-paggi-gateway.php:98
+msgid "Instructions that will be added to the thank you page and emails."
+msgstr ""
+"Instruções que serão adicionadas à página de agradecimento e aos e-mails."
+
+#: includes/class-wc-paggi-gateway.php:103
+msgid "Token"
+msgstr "Token"
+
+#: includes/class-wc-paggi-gateway.php:105
+msgid "Please enter your Paggi token. This is needed to process the payment."
+msgstr ""
+"Por favor entre com o seu token. Isto é necessário para processar os "
+"pagamentos."
+
+#: includes/class-wc-paggi-gateway.php:109
+msgid "Risk analysis"
+msgstr "Análise de risco"
+
+#: includes/class-wc-paggi-gateway.php:111
+msgid "Enable risk analysis"
+msgstr "Habilitar análise de risco"
+
+#: includes/class-wc-paggi-gateway.php:113
+msgid ""
+"Some users may cancel their transactions with their card holder. This will "
+"make us to cancel the charge, and you will probably loose money! So it is "
+"very important that you send us as much data possible so we can identify "
+"users that have suspect profiles. We all would be happier with lower "
+"chargebacks. If you have a high incidence of chargebacks, this may affect "
+"your tax, making it to go higher, so don't take this part unnoticed."
+msgstr ""
+"Alguns utilizadores podem cancelar as suas transações com o titular do "
+"cartão. Isso nos fará cancelar a cobrança, e você provavelmente vai perder "
+"dinheiro! É muito importante que nos envie o máximo de dados possível para "
+"que possamos identificar os utilizadores com perfis suspeitos. Ficaremos "
+"todos mais feliz com menor taxas. Se você tem uma alta incidência de "
+"estornos, isso pode afetar sua taxa, tornando-a mais alta, por isso não tome "
+"esta parte despercebida."
+
+#: includes/class-wc-paggi-gateway.php:116
+#: templates/credit-card/payment-form.php:91
+msgid "Installments"
+msgstr "Parcelas"
+
+#: includes/class-wc-paggi-gateway.php:121
+msgid "Number of Installment"
+msgstr "Número de parcelas"
+
+#: includes/class-wc-paggi-gateway.php:125
+msgid "Maximum number of installments possible with payments by credit card."
+msgstr ""
+"Número máximo de parcelas possível com pagamentos por cartão de crédito."
+
+#: includes/class-wc-paggi-gateway.php:143
+msgid "Smallest Installment"
+msgstr "Valor mínimo de parcela"
+
+#: includes/class-wc-paggi-gateway.php:145
+msgid "Please enter with the value of smallest installment."
+msgstr "Por favor entre com o valor mínimo de parcela"
+
+#: includes/class-wc-paggi-gateway.php:150
+msgid "Interest rate"
+msgstr "Taxa de juros"
+
+#: includes/class-wc-paggi-gateway.php:152
+msgid ""
+"Please enter with the interest rate amount. Note: use 0 to not charge "
+"interest."
+msgstr ""
+"Por favor entre com o valor da taxa de juros. Obs: use 0 para parcelamento "
+"sem taxa de juros"
+
+#: includes/class-wc-paggi-gateway.php:157
+msgid "Free Installments"
+msgstr "Parcelamento sem juros"
+
+#: includes/class-wc-paggi-gateway.php:161
+msgid "Number of installments with interest free."
+msgstr "Número de parcelas sem juros"
+
+#: includes/class-wc-paggi-gateway.php:164
+msgctxt "no free installments"
+msgid "None"
+msgstr "Sem [Sem parcelas sem juros]"
+
+#: includes/class-wc-paggi-gateway.php:180
+msgid "Development"
+msgstr "Desenvolvimento"
+
+#: includes/class-wc-paggi-gateway.php:185
+msgid "Sandbox"
+msgstr "Sandbox"
+
+#: includes/class-wc-paggi-gateway.php:187
+msgid "Enable Paggi Sandbox"
+msgstr "Habilitar Paggi Sandbox"
+
+#: includes/class-wc-paggi-gateway.php:190
+msgid "Paggi Sandbox can be used to test the payments."
+msgstr "Paggi Sandbox pode ser usado para testar os pagamentos."
+
+#: includes/class-wc-paggi-gateway.php:193
+msgid "Debug Log"
+msgstr "Logs"
+
+#: includes/class-wc-paggi-gateway.php:195
+msgid "Enable logging"
+msgstr "Habilitar log"
+
+#: includes/class-wc-paggi-gateway.php:197
+#, php-format
+msgid "Log Paggi events, such as API requests, inside %s"
+msgstr "Log dos eventos Paggi, como requisições a API, então em %s"
+
+#: includes/class-wc-paggi-gateway.php:247
+#: includes/class-wc-paggi-gateway.php:644
+msgid "Name"
+msgstr "Nome"
+
+#: includes/class-wc-paggi-gateway.php:248
+#: includes/class-wc-paggi-gateway.php:645
+#: templates/credit-card/payment-form.php:78
+msgid "Expires"
+msgstr "Validade"
+
+#: includes/class-wc-paggi-gateway.php:249
+#: includes/class-wc-paggi-gateway.php:646
+msgid "Brand"
+msgstr "Bandeira"
+
+#: includes/class-wc-paggi-gateway.php:250
+#: includes/class-wc-paggi-gateway.php:647
+msgid "Last four"
+msgstr "Últimos 4"
+
+#: includes/class-wc-paggi-gateway.php:251
+#: includes/class-wc-paggi-gateway.php:648
+msgid "Action"
+msgstr "Ação"
+
+#: includes/class-wc-paggi-gateway.php:388
+msgid "Payment error: "
+msgstr "Erro no pagamento: "
+
+#: includes/class-wc-paggi-gateway.php:410
+#, php-format
+msgid "Paggi: The transaction was authorized(id = %s.)"
+msgstr "Paggi: A transação foi autorizada (id = %s)"
+
+#: includes/class-wc-paggi-gateway.php:416
+#, php-format
+msgid "Paggi: The transaction is being processed(id = %s.)"
+msgstr "Paggi: A transação está sendo processada (id = %s)"
+
+#: includes/class-wc-paggi-gateway.php:419
+#, php-format
+msgid "Paggi: The banking ticket was issued but not paid yet(id = %s.)"
+msgstr "Paggi: A transação foi gerada mas ainda não foi paga. (id = %s)"
+
+#: includes/class-wc-paggi-gateway.php:423
+#, php-format
+msgid ""
+"Paggi: The transaction was rejected by the card company or by fraud(id = %s.)"
+msgstr ""
+"Paggi: A transação foi rejeitada pelo cartão de crédito ou por fraude.(id= "
+"%s)."
+
+#: includes/class-wc-paggi-gateway.php:428
+#, php-format
+msgid ""
+"The transaction for order %s was rejected by the card company or by fraud"
+msgstr ""
+"A transação da ordem %s foi rejeitada pelo cartão de crédito ou por suspeita "
+"de fraude"
+
+#: includes/class-wc-paggi-gateway.php:428
+msgid "Transaction failed"
+msgstr "Transação falhou"
+
+#: includes/class-wc-paggi-gateway.php:428
+#, php-format
+msgid ""
+"Order %1$s has been marked as failed, because the transaction was rejected "
+"by the card company or by fraud. ID %2$s."
+msgstr ""
+"Order %1$s foi marcada como falha, porque a transação foi rejeitada pelo "
+"cartão de crédito ou por suspeita de fraude."
+
+#: includes/class-wc-paggi-gateway.php:434
+#, php-format
+msgid "Paggi: The transaction was refunded/canceled (id = %s.)"
+msgstr "Paggi: A transação foi estornada/cancelada (id = %s.)"
+
+#: includes/class-wc-paggi-gateway.php:439
+#, php-format
+msgid "The transaction for order %s refunded"
+msgstr "A transação "
+
+#: includes/class-wc-paggi-gateway.php:439
+msgid "Transaction refunded"
+msgstr "Transação estornada"
+
+#: includes/class-wc-paggi-gateway.php:439
+#, php-format
+msgid "Order %1$s has been marked as refunded by Paggi. ID %2$s"
+msgstr "Pedido %1$s foi marcado como estornado pelo Paggi. ID %2$s"
+
+#: includes/class-wc-paggi-gateway.php:488
+msgid "System Status &gt; Logs"
+msgstr "Status do sistema &gt; Logs"
+
+#: includes/class-wc-paggi-gateway.php:577
+#: includes/class-wc-paggi-gateway.php:660
+msgid "Paggi Cards"
+msgstr "Cartões"
+
+#: includes/class-wc-paggi-gateway.php:592
+msgid "Cards"
+msgstr "Cartões"
+
+#: includes/class-wc-paggi-gateway.php:627
+msgid "Error: "
+msgstr "Erro"
+
+#: templates/credit-card/payment-form.php:39
+msgid "Use this Card"
+msgstr "Use este cartão"
+
+#: templates/credit-card/payment-form.php:59 includes/views/html-cards.php:53
+msgid "New Card"
+msgstr "Novo cartão"
+
+#: templates/credit-card/payment-form.php:70
+#: templates/credit-card/payment-form.php:71 includes/views/html-cards.php:61
+msgid "Card number"
+msgstr "Numero do cartão"
+
+#: templates/credit-card/payment-form.php:74
+#: templates/credit-card/payment-form.php:75 includes/views/html-cards.php:64
+msgid "Full name"
+msgstr "Nome completo"
+
+#: templates/credit-card/payment-form.php:80 includes/views/html-cards.php:67
+msgid "MM/YY"
+msgstr "MM/AA"
+
+#: templates/credit-card/payment-form.php:82
+#: templates/credit-card/payment-form.php:84 includes/views/html-cards.php:70
+msgid "CVC"
+msgstr "CVC"
+
+#: templates/credit-card/payment-form.php:96
+#, php-format
+msgid "%1$dx of %2$s"
+msgstr "%1$dx de %2$s"
+
+#: includes/views/html-cards.php:32
+msgid "Remove Card"
+msgstr "Excluir cartão"
+
+#: includes/views/html-cards.php:41 includes/views/html-cards.php:48
+msgid "No cards"
+msgstr "Sem cartões"
+
+#: includes/views/html-cards.php:76
+msgid "Register Card"
+msgstr "Cadastrar cartão"
+
+#: includes/views/html-cards.php:132 includes/admin/meta.php:33
+msgid "An error has occurred in request. Try Again"
+msgstr "Um erro ocorreu durante a requisição. Tente novamente"
+
+#: includes/admin/meta.php:5
+msgid "Cancel payment"
+msgstr "Cancelar pagamento"
+
+#: templates/credit-card/emails/html-instructions.php:12
+#: templates/credit-card/emails/plain-instructions.php:11
+msgid "Payment"
+msgstr "Pagamento"
+
+#: templates/credit-card/emails/html-instructions.php:14
+#: templates/credit-card/emails/plain-instructions.php:15
+#, php-format
+msgid "Payment successfully made using %1$s credit card in %2$s."
+msgstr "Pagamento realizado com sucesso usando %1$s cartão de credito em %2$s"
+
+#. Description of the plugin
+msgid "Includes Paggi as a payment gateway to WooCommerce"
+msgstr "Incluir Paggi como um gateway de pagamento no WooCommerce"
+
+#. URI of the plugin
+#. Author URI of the plugin
+msgid "http://www.cassiovidal.com"
+msgstr "http://www.cassiovidal.com"
+
+#. Author of the plugin
+msgid "Cassio Vidal"
+msgstr "Cassio Vidal"

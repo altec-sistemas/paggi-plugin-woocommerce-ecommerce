@@ -82,7 +82,7 @@ class WC_Paggi_Gateway extends WC_Payment_Gateway {
                 'title' => __('Title', 'woocommerce-paggi'),
                 'type' => 'text',
                 'description' => __('This controls the title for the payment method the customer sees during checkout.', 'woocommerce-paggi'),
-                'default' => __('Paggi Payment', 'woocommerce-paggi'),
+                'default' => __('Pagamento no cartão de crédito', 'woocommerce-paggi'),
                 'desc_tip' => true,
             ),
             'paggi_description' => array(

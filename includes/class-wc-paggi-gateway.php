@@ -15,7 +15,7 @@ class WC_Paggi_Gateway extends WC_Payment_Gateway {
     public function __construct() {
 
         $this->id = 'paggi_gateway';
-        $this->icon = apply_filters('woocommerce_paggi_icon', plugins_url('assets/images/paggi.png', plugin_dir_path(__FILE__)));
+        //$this->icon = apply_filters('woocommerce_paggi_icon', plugins_url('assets/images/paggi.png', plugin_dir_path(__FILE__)));
         $this->has_fields = false;
         $this->method_title = __('Paggi', 'woocommerce-paggi');
         $this->method_description = __('Pagamento no cartão de crédito', 'woocommerce-paggi');//

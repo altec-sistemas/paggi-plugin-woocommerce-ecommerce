@@ -117,7 +117,7 @@ msgstr ""
 
 #: includes/class-wc-paggi-gateway.php:85
 msgid "Paggi Payment"
-msgstr ""
+msgstr "Pagamento no cartão de crédito"
 
 #: includes/class-wc-paggi-gateway.php:89
 msgid "Description"

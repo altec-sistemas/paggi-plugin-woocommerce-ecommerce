@@ -2,14 +2,14 @@
 
 /**
  * WooCommerce Gateway Paggi class
- * 
- * @version 0.0.1 
+ *
+ * @version 0.0.1
  */
 class WC_Paggi_Gateway extends WC_Payment_Gateway {
 
     /**
      * Constructor for the gateway.
-     * 
+     *
      * @since 0.0.1
      */
     public function __construct() {
@@ -61,7 +61,7 @@ class WC_Paggi_Gateway extends WC_Payment_Gateway {
 
     /**
      * Initialize Gateway Settings Form Fields
-     * 
+     *
      * @since 0.0.1
      */
     public function init_form_fields() {
@@ -82,7 +82,7 @@ class WC_Paggi_Gateway extends WC_Payment_Gateway {
                 'title' => __('Title', 'woocommerce-paggi'),
                 'type' => 'text',
                 'description' => __('This controls the title for the payment method the customer sees during checkout.', 'woocommerce-paggi'),
-                'default' => __('Pagamento no cartão de crédito', 'woocommerce-paggi'),
+                'default' => __('Paggi Payment', 'woocommerce-paggi'),
                 'desc_tip' => true,
             ),
             'paggi_description' => array(
@@ -201,7 +201,7 @@ class WC_Paggi_Gateway extends WC_Payment_Gateway {
 
     /**
      * Payment fields.
-     * 
+     *
      * @since 0.0.1
      */
     public function payment_fields() {
@@ -255,8 +255,8 @@ class WC_Paggi_Gateway extends WC_Payment_Gateway {
     }
 
     /**
-     * 
-     * 
+     *
+     *
      * @since 0.0.1
      * @param type $cart_total
      * @param type $installment
@@ -324,7 +324,7 @@ class WC_Paggi_Gateway extends WC_Payment_Gateway {
                 $zip = $order->get_billing_postcode();
                 $result = $this->api->set_customer($name, $email, $document, $phone, $street, $district, $city, $state, $zip);
                 if (isset($result['id'])) {
-                    $paggi_customer_id = $result['id'];                    
+                    $paggi_customer_id = $result['id'];
                     update_post_meta($order_id, 'paggi_customer_id', $paggi_customer_id);
                 } else {
                     if (isset($result['error'])) {
@@ -469,7 +469,7 @@ class WC_Paggi_Gateway extends WC_Payment_Gateway {
 
     /**
      * Get Token
-     * 
+     *
      * @since 0.0.1
      * @return string
      */
@@ -493,8 +493,8 @@ class WC_Paggi_Gateway extends WC_Payment_Gateway {
 
     /**
      * Save Account form
-     * Synchronize woocommerce registration with Paggi 
-     * 
+     * Synchronize woocommerce registration with Paggi
+     *
      * @since 0.0.1
      * @param string $user_id
      */
@@ -534,7 +534,7 @@ class WC_Paggi_Gateway extends WC_Payment_Gateway {
 
     /**
      * Init
-     * 
+     *
      * @since 0.0.1
      */
     public function init() {
@@ -562,7 +562,7 @@ class WC_Paggi_Gateway extends WC_Payment_Gateway {
 
     /**
      * View Card title
-     * 
+     *
      * @since 0.0.1
      * @global type $wp_query
      * @param String $title
@@ -596,7 +596,7 @@ class WC_Paggi_Gateway extends WC_Payment_Gateway {
 
     /**
      * View card
-     * 
+     *
      * @since 0.0.1
      */
     function paggicards_endpoint_content() {
@@ -652,7 +652,7 @@ class WC_Paggi_Gateway extends WC_Payment_Gateway {
 
     /**
      * Cancel meta box
-     * 
+     *
      * @since 0.0.1
      */
     function add_meta_boxes() {
@@ -663,7 +663,7 @@ class WC_Paggi_Gateway extends WC_Payment_Gateway {
 
     /**
      * View cancel metabox
-     * 
+     *
      * @since 0.0.1
      * @param WC_Order $order_id
      */

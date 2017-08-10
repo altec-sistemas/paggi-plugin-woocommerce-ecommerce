@@ -14,7 +14,9 @@ class WC_Paggi_API {
     /**
      * API URL.
      */
-    const API_URL = 'https://online.paggi.com/api/v4/';
+    //const API_URL = 'https://online.paggi.com/api/v4/';
+    const API_URL = 'https://staging-online.paggi.com/api/v4';
+
 
     /**
      * Gateway class.

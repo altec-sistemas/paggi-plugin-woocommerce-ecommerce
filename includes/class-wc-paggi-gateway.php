@@ -29,7 +29,7 @@ class WC_Paggi_Gateway extends WC_Payment_Gateway {
         $this->title = $this->get_option('paggi_title', 'Paggi');
         $this->description = $this->get_option('paggi_description');
         $this->instructions = $this->get_option('paggi_instructions', $this->description);
-        $this->token = $this->get_option('paggi_token');
+        $this->token = $this->get_option('paggi_token');//paggi_token
         $this->sandbox = $this->get_option('paggi_sandbox', 'no');
         $this->debug = $this->get_option('paggi_debug');
         $this->risk = $this->get_option('paggi_risk', 'yes');
@@ -265,9 +265,9 @@ class WC_Paggi_Gateway extends WC_Payment_Gateway {
     public function get_installments($cart_total, $installment) {
         if (isset($installment)) {
             if ($installment <= $this->free_installments) {
-                $return = number_format((float) floatval($cart_total) / $installment, 2, '.', '');
+                $return = number_format((float) floatval($cart_total), 2, '.', '');
             } else {
-                $return = number_format((float) ((floatval($cart_total) + (floatval($cart_total) * ($this->interest_rate * $installment) / 100)) / $installment), 2, '.', '');
+                $return = number_format((float) ((floatval($cart_total) + (floatval($cart_total) * ($this->interest_rate * $installment) / 100))), 2, '.', '');
             }
         } else {
             $return = array(
@@ -279,7 +279,7 @@ class WC_Paggi_Gateway extends WC_Payment_Gateway {
             }
             for ($i = 2; $i <= $installments; $i++) {
                 if ($i <= $this->free_installments) {
-                    $return[$i] = number_format((float) $cart_total / $i, 2, '.', '');
+                    $return[$i] = number_format((float) $cart_total / $i, 2, '.', '');//$i
                 } else {
                     $return[$i] = number_format((float) (($cart_total + ($cart_total * ($this->interest_rate * $i) / 100)) / $i), 2, '.', '');
                 }
@@ -358,6 +358,9 @@ class WC_Paggi_Gateway extends WC_Payment_Gateway {
                     $value = $this->get_installments($value, $_POST['installments']);
                 }
                 $result = $this->api->process_regular_payment($value, $paggi_customer_id, $card_id, $_POST['installments']);
+                 if ('yes' === $this->debug) {
+                    $this->log->add($this->id, $value.";".$paggi_customer_id.";".$card_id.";".$_POST['installments']);
+                }
                 if (isset($result['id'])) {
                     $transaction_id = $result['id'];
 

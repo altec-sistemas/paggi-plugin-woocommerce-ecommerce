@@ -239,7 +239,9 @@ class WC_Paggi_Gateway extends WC_Payment_Gateway {
             }
         }
 
-        $installments = $this->get_installments($cart_total);
+        $installments = $this->get_installments_view($cart_total);
+        //print_r(array_values ($installments));
+
         wc_get_template('credit-card/payment-form.php', array(
             'cart_total' => $cart_total,
             'cards' => $cards,
@@ -269,24 +271,27 @@ class WC_Paggi_Gateway extends WC_Payment_Gateway {
             } else {
                 $return = number_format((float) ((floatval($cart_total) + (floatval($cart_total) * ($this->interest_rate * $installment) / 100))), 2, '.', '');
             }
-        } else {
-            $return = array(
-                '1' => $cart_total
-            );
-            $installments = $cart_total / $this->smallest_installment;
-            if ($installments > $this->max_installment) {
-                $installments = $this->max_installment;
-            }
-            for ($i = 2; $i <= $installments; $i++) {
-                if ($i <= $this->free_installments) {
-                    $return[$i] = number_format((float) $cart_total / $i, 2, '.', '');//$i
-                } else {
-                    $return[$i] = number_format((float) (($cart_total + ($cart_total * ($this->interest_rate * $i) / 100)) / $i), 2, '.', '');
-                }
-            }
         }
         if ('yes' === $this->debug) {
             $this->log->add($this->id, "get_installments($cart_total, $installment) = $return");
+        }
+        return $return;
+    }
+
+    public function get_installments_view($cart_total)
+    {
+        $return = array('1' => $cart_total);
+        $installments = $cart_total / $this->smallest_installment;
+        if ($installments > $this->max_installment) {
+            $installments = $this->max_installment;
+        }
+        //$this->log->add($this->id, "$installments max $this->max_installment");
+        for ($i = 2; $i <= $installments; $i++) {
+            if ($i <= $this->free_installments) {
+                $return[$i] = number_format((float) $cart_total / $i, 2, '.', '');//$i
+                } else {
+                $return[$i] = number_format((float) (($cart_total + ($cart_total * ($this->interest_rate * $i) / 100)) / $i), 2, '.', '');
+            }
         }
         return $return;
     }
@@ -384,6 +389,7 @@ class WC_Paggi_Gateway extends WC_Payment_Gateway {
                     }
                 }
             }
+
             if ('' === $error) {
                 // Return thankyou redirect
                 return array(

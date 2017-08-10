@@ -72,17 +72,20 @@ class WC_Paggi_API {
         curl_setopt($ch, CURLOPT_URL, self::API_URL . '/' . $action);
         curl_setopt($ch, CURLOPT_CUSTOMREQUEST, $method);
         curl_setopt($ch, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
-        curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/json'));
         curl_setopt($ch, CURLOPT_USERPWD, $this->gateway->get_token());
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
         if ($data)
             curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($data));
 
-        if(array_key_exists('X_FORWARDED_FOR', $_SERVER) ) {
-          curl_setopt($ch, CURLOPT_HTTPHEADER, array("X-Forwarded-For: {$_SERVER['X_FORWARDED_FOR']}"));
+        if(array_key_exists('X_FORWARDED_FOR', $_SERVER)) {
+          curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+            'Content-Type: application/json', "X-Forwarded-For: {$_SERVER['X_FORWARDED_FOR']}"
+          ));
         }
         else {
-          curl_setopt($ch, CURLOPT_HTTPHEADER, array("X-Forwarded-For: {$_SERVER['REMOTE_ADDR']}"));
+          curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+            'Content-Type: application/json', "X-Forwarded-For: {$_SERVER['REMOTE_ADDR']}"
+          ));
         }
 
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);

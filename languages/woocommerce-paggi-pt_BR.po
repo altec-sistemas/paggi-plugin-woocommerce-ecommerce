@@ -448,8 +448,8 @@ msgstr "Incluir Paggi como um gateway de pagamento no WooCommerce"
 
 #. URI of the plugin
 #. Author URI of the plugin
-msgid "http://www.cassiovidal.com"
-msgstr "http://www.cassiovidal.com"
+msgid "http://www.paggi.com"
+msgstr "http://www.paggi.com"
 
 #. Author of the plugin
 msgid "Cassio Vidal"

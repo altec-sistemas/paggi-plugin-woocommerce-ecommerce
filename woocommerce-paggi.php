@@ -2,7 +2,7 @@
 
 /*
   Plugin Name: WooCommerce Paggi
-  Plugin URI: http://www.cassiovidal.com
+  Plugin URI: http://www.paggi.com
   Description: Includes Paggi as a payment gateway to WooCommerce
   Version: 0.3.1
   Author: Paggi IT Team

@@ -415,7 +415,7 @@ msgstr ""
 
 #. URI of the plugin
 #. Author URI of the plugin
-msgid "http://www.cassiovidal.com"
+msgid "http://www.paggi.com"
 msgstr ""
 
 #. Author of the plugin

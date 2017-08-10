@@ -78,6 +78,13 @@ class WC_Paggi_API {
         if ($data)
             curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($data));
 
+        if(array_key_exists('X_FORWARDED_FOR', $_SERVER) ) {
+          curl_setopt($ch, CURLOPT_HTTPHEADER, array("X-Forwarded-For: {$_SERVER['X_FORWARDED_FOR']}"));
+        }
+        else {
+          curl_setopt($ch, CURLOPT_HTTPHEADER, array("X-Forwarded-For: {$_SERVER['REMOTE_ADDR']}"));
+        }
+
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
         $result = curl_exec($ch);
         $error = curl_error($ch);

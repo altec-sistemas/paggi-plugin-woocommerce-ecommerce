@@ -3,7 +3,7 @@
 /**
  * WooCommerce Paggi API class
  *
- * @version 0.0.1
+ * @version 0.3.1
  */
 if (!defined('ABSPATH')) {
     exit;
@@ -28,7 +28,7 @@ class WC_Paggi_API {
     /**
      * Constructor.
      *
-     * @since 0.0.1
+     * @since 0.1.0
      * @param WC_Payment_Gateway $gateway Gateway instance.
      */
     public function __construct($gateway = null) {
@@ -40,7 +40,7 @@ class WC_Paggi_API {
     /**
      * Get API URL.
      *
-     * @since 0.0.1
+     * @since 0.1.0
      * @return string
      */
     public function get_api_url() {
@@ -50,7 +50,7 @@ class WC_Paggi_API {
     /**
      * Only numbers.
      *
-     * @since 0.0.1
+     * @since 0.1.0
      * @param  string|int $string String to convert.
      * @return string|int
      */
@@ -61,7 +61,7 @@ class WC_Paggi_API {
     /**
      * Perform the comunication with Paggi API
      *
-     * @since 0.0.1
+     * @since 0.1.0
      * @param string $action
      * @param string $method
      * @param array $data
@@ -178,7 +178,7 @@ class WC_Paggi_API {
     /**
      * Set Customer
      *
-     * @since 0.0.1
+     * @since 0.1.0
      * @param string $name
      * @param string $email
      * @param string $document
@@ -213,7 +213,7 @@ class WC_Paggi_API {
     /**
      * Update customer
      *
-     * @since 0.0.1
+     * @since 0.1.0
      * @param string $paggi_id
      * @param string $name
      * @param string $email
@@ -249,7 +249,7 @@ class WC_Paggi_API {
     /**
      * list Paggi customers
      *
-     * @since 0.0.1
+     * @since 0.1.0
      * @param string $paggi_id
      * @return array
      */
@@ -263,7 +263,7 @@ class WC_Paggi_API {
     /**
      * add card to customer
      *
-     * @since 0.0.1
+     * @since 0.1.0
      * @param string $paggi_id
      * @param string $name
      * @param string $number
@@ -292,7 +292,7 @@ class WC_Paggi_API {
     /**
      *  exclude a card in Paggi
      *
-     * @since 0.0.1
+     * @since 0.1.0
      * @param string $card_id     *
      */
     public function del_card($card_id) {
@@ -313,7 +313,7 @@ class WC_Paggi_API {
     /**
      * Send payment request to Paggi
      *
-     * @since 0.0.1
+     * @since 0.1.0
      * @param string $amount
      * @param string $customer_id
      * @param string $card_id
@@ -342,7 +342,7 @@ class WC_Paggi_API {
     /**
      * Cancel transaction in Paggi
      *
-     * @since 0.0.1
+     * @since 0.1.0
      * @param string $transaction_id
      * @param string $order_id
      */

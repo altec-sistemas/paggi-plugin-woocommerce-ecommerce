@@ -4,36 +4,36 @@
   Plugin Name: WooCommerce Paggi
   Plugin URI: http://www.cassiovidal.com
   Description: Includes Paggi as a payment gateway to WooCommerce
-  Version: 0.0.1
-  Author: Cassio Vidal
-  Author URI: http://www.cassiovidal.com
+  Version: 0.3.1
+  Author: Paggi IT Team
+  Author URI: http://www.paggi.com
   License: GPLv2
   Text Domain: woocommerce-paggi
   Domain Path: /languages/
 
- *      Copyright 2017 Cassio Vidal <comercial@cassiovidal.com>
- *      
+ *      Copyright 2017 Paggi IT Team <contato@paggi.com>
+ *
  *      This program is free software; you can redistribute it and/or modify
  *      it under the terms of the GNU General Public License as published by
  *      the Free Software Foundation; either version 3 of the License, or
  *      (at your option) any later version.
- *      
+ *
  *      This program is distributed in the hope that it will be useful,
  *      but WITHOUT ANY WARRANTY; without even the implied warranty of
  *      MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  *      GNU General Public License for more details.
- *      
+ *
  *      You should have received a copy of the GNU General Public License
  *      along with this program; if not, write to the Free Software
  *      Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  *      MA 02110-1301, USA.
- * 
+ *
  */
 
 if (!defined('ABSPATH')) {
     exit; // Exit if accessed directly.
 }
-// Verification of prerequisites 
+// Verification of prerequisites
 function admin_notice__error($message) {
     $class = 'notice notice-error';
     printf('<div class="%1$s"><p>%2$s</p></div>', esc_attr($class), esc_html($message));
@@ -53,8 +53,8 @@ if (!extension_loaded('curl')) {
 // end verification of prerequisites
 
 // Make sure is class is not active
-if (!class_exists('WC_Paggi') && in_array('woocommerce/woocommerce.php', apply_filters('active_plugins', get_option('active_plugins'))) 
-        && in_array('woocommerce-extra-checkout-fields-for-brazil/woocommerce-extra-checkout-fields-for-brazil.php', apply_filters('active_plugins', get_option('active_plugins'))) 
+if (!class_exists('WC_Paggi') && in_array('woocommerce/woocommerce.php', apply_filters('active_plugins', get_option('active_plugins')))
+        && in_array('woocommerce-extra-checkout-fields-for-brazil/woocommerce-extra-checkout-fields-for-brazil.php', apply_filters('active_plugins', get_option('active_plugins')))
         && extension_loaded('curl')):
     // define constants
     define('PLUGIN_DIR_PATH', plugin_dir_path(__FILE__));
@@ -78,7 +78,7 @@ if (!class_exists('WC_Paggi') && in_array('woocommerce/woocommerce.php', apply_f
 
         /**
          * Initialize the plugin public actions.
-         * @since 0.0.1
+         * @since 0.1.0
          */
         private function __construct() {
             // Load plugin text domain.
@@ -91,8 +91,8 @@ if (!class_exists('WC_Paggi') && in_array('woocommerce/woocommerce.php', apply_f
 
         /**
          * Load the plugin text domain for translation.
-         * 
-         * @since 0.0.1
+         *
+         * @since 0.1.0
          */
         public function load_plugin_textdomain() {
             load_plugin_textdomain('woocommerce-paggi', false, dirname(plugin_basename(__FILE__)) . '/languages/');
@@ -100,8 +100,8 @@ if (!class_exists('WC_Paggi') && in_array('woocommerce/woocommerce.php', apply_f
 
         /**
          * Add the gateway to WC Available Gateways
-         * 
-         * @since 0.0.1
+         *
+         * @since 0.1.0
          * @param array $gateways all available WC gateways
          * @return array $gateways all WC gateways + paggi gateway
          */
@@ -112,8 +112,8 @@ if (!class_exists('WC_Paggi') && in_array('woocommerce/woocommerce.php', apply_f
 
         /**
          * Return an instance of this class.
-         * 
-         * @since 0.0.1
+         *
+         * @since 0.1.0
          * @return object A single instance of this class.
          */
         public static function get_instance() {
@@ -127,8 +127,8 @@ if (!class_exists('WC_Paggi') && in_array('woocommerce/woocommerce.php', apply_f
 
         /**
          * Adds plugin page links
-         * 
-         * @since 0.0.1
+         *
+         * @since 0.1.0
          * @param array $links all plugin links
          * @return array $links all plugin links + our custom links (i.e., "Settings")
          */
@@ -143,8 +143,8 @@ if (!class_exists('WC_Paggi') && in_array('woocommerce/woocommerce.php', apply_f
 
         /**
          * Init Paggi Payment Gateway
-         *  
-         * @since 0.0.1
+         *
+         * @since 0.1.0
          */
         public function wc_paggi_gateway_init() {
 
@@ -156,7 +156,7 @@ if (!class_exists('WC_Paggi') && in_array('woocommerce/woocommerce.php', apply_f
         /**
          * Get templates path.
          *
-         * @since 0.0.1
+         * @since 0.1.0
          * @return string
          */
         public static function get_templates_path() {
@@ -165,5 +165,5 @@ if (!class_exists('WC_Paggi') && in_array('woocommerce/woocommerce.php', apply_f
 
     }
 
-    add_action('plugins_loaded', array('WC_Paggi', 'get_instance'));    
+    add_action('plugins_loaded', array('WC_Paggi', 'get_instance'));
 endif;

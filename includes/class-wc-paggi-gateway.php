@@ -3,14 +3,14 @@
 /**
  * WooCommerce Gateway Paggi class
  *
- * @version 0.0.1
+ * @version 0.3.1
  */
 class WC_Paggi_Gateway extends WC_Payment_Gateway {
 
     /**
      * Constructor for the gateway.
      *
-     * @since 0.0.1
+     * @since 0.1.0
      */
     public function __construct() {
 
@@ -62,7 +62,7 @@ class WC_Paggi_Gateway extends WC_Payment_Gateway {
     /**
      * Initialize Gateway Settings Form Fields
      *
-     * @since 0.0.1
+     * @since 0.1.0
      */
     public function init_form_fields() {
 
@@ -202,7 +202,7 @@ class WC_Paggi_Gateway extends WC_Payment_Gateway {
     /**
      * Payment fields.
      *
-     * @since 0.0.1
+     * @since 0.1.0
      */
     public function payment_fields() {
         if ($description = $this->get_description()) {
@@ -259,7 +259,7 @@ class WC_Paggi_Gateway extends WC_Payment_Gateway {
     /**
      *
      *
-     * @since 0.0.1
+     * @since 0.1.0
      * @param type $cart_total
      * @param type $installment
      * @return type
@@ -299,7 +299,7 @@ class WC_Paggi_Gateway extends WC_Payment_Gateway {
     /**
      * Process the payment and return the result
      *
-     * @since 0.0.1
+     * @since 0.1.0
      * @param int $order_id
      * @return array
      */
@@ -406,7 +406,7 @@ class WC_Paggi_Gateway extends WC_Payment_Gateway {
     /**
      * Process the order status.
      *
-     * @since 0.0.1
+     * @since 0.1.0
      * @param WC_Order $order
      * @param string $status
      * @param string $transaction_id
@@ -459,7 +459,7 @@ class WC_Paggi_Gateway extends WC_Payment_Gateway {
     /**
      * Get the smallest installment amount.
      *
-     * @since 0.0.1
+     * @since 0.1.0
      * @return int
      */
     public function get_smallest_installment() {
@@ -469,7 +469,7 @@ class WC_Paggi_Gateway extends WC_Payment_Gateway {
     /**
      * Send email notification.
      *
-     * @since 0.0.1
+     * @since 0.1.0
      * @param string $subject Email subject.
      * @param string $title   Email title.
      * @param string $message Email message.
@@ -482,7 +482,7 @@ class WC_Paggi_Gateway extends WC_Payment_Gateway {
     /**
      * Get Token
      *
-     * @since 0.0.1
+     * @since 0.1.0
      * @return string
      */
     public function get_token() {
@@ -492,7 +492,7 @@ class WC_Paggi_Gateway extends WC_Payment_Gateway {
     /**
      * Get log.
      *
-     * @since 0.0.1
+     * @since 0.1.0
      * @return string
      */
     protected function get_log_view() {
@@ -507,7 +507,7 @@ class WC_Paggi_Gateway extends WC_Payment_Gateway {
      * Save Account form
      * Synchronize woocommerce registration with Paggi
      *
-     * @since 0.0.1
+     * @since 0.1.0
      * @param string $user_id
      */
     public function save_account_form($user_id) {
@@ -547,7 +547,7 @@ class WC_Paggi_Gateway extends WC_Payment_Gateway {
     /**
      * Init
      *
-     * @since 0.0.1
+     * @since 0.1.0
      */
     public function init() {
         add_action('woocommerce_update_options_payment_gateways_' . $this->id, array($this, 'process_admin_options'))
@@ -575,7 +575,7 @@ class WC_Paggi_Gateway extends WC_Payment_Gateway {
     /**
      * View Card title
      *
-     * @since 0.0.1
+     * @since 0.1.0
      * @global type $wp_query
      * @param String $title
      * @return String
@@ -595,7 +595,7 @@ class WC_Paggi_Gateway extends WC_Payment_Gateway {
     /**
      * Card menu items
      *
-     * @since 0.0.1
+     * @since 0.1.0
      * @param arr $items
      * @return arr
      */
@@ -609,7 +609,7 @@ class WC_Paggi_Gateway extends WC_Payment_Gateway {
     /**
      * View card
      *
-     * @since 0.0.1
+     * @since 0.1.0
      */
     function paggicards_endpoint_content() {
         if (file_exists(PLUGIN_DIR_PATH . 'assets/js/jquery.mask/jquery.mask.min.js')) { // jquery-mask
@@ -665,7 +665,7 @@ class WC_Paggi_Gateway extends WC_Payment_Gateway {
     /**
      * Cancel meta box
      *
-     * @since 0.0.1
+     * @since 0.1.0
      */
     function add_meta_boxes() {
         add_meta_box(
@@ -676,7 +676,7 @@ class WC_Paggi_Gateway extends WC_Payment_Gateway {
     /**
      * View cancel metabox
      *
-     * @since 0.0.1
+     * @since 0.1.0
      * @param WC_Order $order_id
      */
     function meta_paggicards($order_id) {

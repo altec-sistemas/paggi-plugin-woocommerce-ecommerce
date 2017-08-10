@@ -322,7 +322,9 @@ class WC_Paggi_Gateway extends WC_Payment_Gateway {
                 $city = $order->get_billing_city();
                 $state = $order->get_billing_state();
                 $zip = $order->get_billing_postcode();
+                
                 $result = $this->api->set_customer($name, $email, $document, $phone, $street, $district, $city, $state, $zip);
+
                 if (isset($result['id'])) {
                     $paggi_customer_id = $result['id'];
                     update_post_meta($order_id, 'paggi_customer_id', $paggi_customer_id);
@@ -358,8 +360,9 @@ class WC_Paggi_Gateway extends WC_Payment_Gateway {
                     $value = $this->get_installments($value, $_POST['installments']);
                 }
                 $result = $this->api->process_regular_payment($value, $paggi_customer_id, $card_id, $_POST['installments']);
-                 if ('yes' === $this->debug) {
-                    $this->log->add($this->id, $value.";".$paggi_customer_id.";".$card_id.";".$_POST['installments']);
+                if ('yes' === $this->debug) {
+
+                    $this->log->add($this->id, "Amount: ".$value."; Customer_id: ".$paggi_customer_id."; Card id :".$card_id."; Installments: ".$_POST['installments']);
                 }
                 if (isset($result['id'])) {
                     $transaction_id = $result['id'];

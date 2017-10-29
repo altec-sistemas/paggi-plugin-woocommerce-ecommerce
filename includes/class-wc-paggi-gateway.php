@@ -32,7 +32,7 @@ class WC_Paggi_Gateway extends WC_Payment_Gateway {
         $this->token = $this->get_option('paggi_token');//paggi_token
         $this->sandbox = $this->get_option('paggi_sandbox', 'no');
         $this->debug = $this->get_option('paggi_debug');
-        $this->risk = $this->get_option('paggi_risk', 'yes');
+        $this->risk = 'yes';
         $this->max_installment = $this->get_option('max_installment');
         $this->smallest_installment = $this->get_option('smallest_installment');
         $this->interest_rate = $this->get_option('interest_rate', '0');
@@ -104,13 +104,6 @@ class WC_Paggi_Gateway extends WC_Payment_Gateway {
                 'type' => 'text',
                 'description' => __('Please enter your Paggi token. This is needed to process the payment.', 'woocommerce-paggi'),
                 'default' => '',
-            ),
-            'paggi_risk' => array(
-                'title' => __('Risk analysis', 'woocommerce-paggi'),
-                'type' => 'checkbox',
-                'label' => __('Enable risk analysis', 'woocommerce-paggi'),
-                'default' => 'yes',
-                'description' => __('Some users may cancel their transactions with their card holder. This will make us to cancel the charge, and you will probably loose money! So it is very important that you send us as much data possible so we can identify users that have suspect profiles. We all would be happier with lower chargebacks. If you have a high incidence of chargebacks, this may affect your tax, making it to go higher, so don\'t take this part unnoticed.', 'woocommerce-paggi'),
             ),
             'installments' => array(
                 'title' => __('Installments', 'woocommerce-paggi'),
@@ -327,7 +320,7 @@ class WC_Paggi_Gateway extends WC_Payment_Gateway {
                 $city = $order->get_billing_city();
                 $state = $order->get_billing_state();
                 $zip = $order->get_billing_postcode();
-                
+
                 $result = $this->api->set_customer($name, $email, $document, $phone, $street, $district, $city, $state, $zip);
 
                 if (isset($result['id'])) {

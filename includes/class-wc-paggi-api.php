@@ -321,16 +321,10 @@ class WC_Paggi_API {
      * @return array
      */
     public function process_regular_payment($amount, $customer_id, $card_id, $installments) {
-        if ("no" === $this->gateway->risk) {
-            $risk = FALSE;
-        } else {
-            $risk = TRUE;
-        }
         $data = array(
             'amount' => $this->only_numbers($amount),
             'customer_id' => $customer_id,
-            'card_id' => $card_id,
-            'risk_analysis' => $risk,
+            'card_id' => $card_id
             'installments_number' => $installments
         );
 

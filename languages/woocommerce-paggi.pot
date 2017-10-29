@@ -147,13 +147,6 @@ msgstr ""
 msgid "Please enter your Paggi token. This is needed to process the payment."
 msgstr ""
 
-#: includes/class-wc-paggi-gateway.php:109
-msgid "Risk analysis"
-msgstr ""
-
-#: includes/class-wc-paggi-gateway.php:111
-msgid "Enable risk analysis"
-msgstr ""
 
 #: includes/class-wc-paggi-gateway.php:113
 msgid ""

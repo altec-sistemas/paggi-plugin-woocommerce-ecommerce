@@ -168,14 +168,6 @@ msgstr ""
 "Por favor entre com o seu token. Isto é necessário para processar os "
 "pagamentos."
 
-#: includes/class-wc-paggi-gateway.php:109
-msgid "Risk analysis"
-msgstr "Análise de risco"
-
-#: includes/class-wc-paggi-gateway.php:111
-msgid "Enable risk analysis"
-msgstr "Habilitar análise de risco"
-
 #: includes/class-wc-paggi-gateway.php:113
 msgid ""
 "Some users may cancel their transactions with their card holder. This will "

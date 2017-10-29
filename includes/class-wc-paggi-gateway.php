@@ -32,7 +32,6 @@ class WC_Paggi_Gateway extends WC_Payment_Gateway {
         $this->token = $this->get_option('paggi_token');//paggi_token
         $this->sandbox = $this->get_option('paggi_sandbox', 'no');
         $this->debug = $this->get_option('paggi_debug');
-        $this->risk = 'yes';
         $this->max_installment = $this->get_option('max_installment');
         $this->smallest_installment = $this->get_option('smallest_installment');
         $this->interest_rate = $this->get_option('interest_rate', '0');

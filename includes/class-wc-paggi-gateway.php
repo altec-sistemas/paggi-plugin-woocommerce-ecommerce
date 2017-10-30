@@ -3,7 +3,7 @@
 /**
  * WooCommerce Gateway Paggi class
  *
- * @version 0.3.1
+ * @version 0.3.2
  */
 class WC_Paggi_Gateway extends WC_Payment_Gateway {
 

@@ -4,7 +4,7 @@
   Plugin Name: WooCommerce Paggi
   Plugin URI: http://www.paggi.com
   Description: Includes Paggi as a payment gateway to WooCommerce
-  Version: 0.3.1
+  Version: 0.3.2
   Author: Paggi IT Team
   Author URI: http://www.paggi.com
   License: GPLv2

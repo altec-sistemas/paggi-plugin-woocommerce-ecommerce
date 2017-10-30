@@ -324,7 +324,7 @@ class WC_Paggi_API {
         $data = array(
             'amount' => $this->only_numbers($amount),
             'customer_id' => $customer_id,
-            'card_id' => $card_id
+            'card_id' => $card_id,
             'installments_number' => $installments
         );
 

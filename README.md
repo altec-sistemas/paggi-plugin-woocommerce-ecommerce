@@ -11,6 +11,7 @@ Este é uma extensão para e-comerces que utilizam a plataforma WooCommerce. Ace
 *  PHP 5.3+
 *  WordPress 3.8+
 *  WooCommerce 2.3+
+*  Versão mais recente do [WooCommerce Extra Checkout Fields for Brazil](http://wordpress.org/plugins/woocommerce-extra-checkout-fields-for-brazil/).
 
 ### Instalação
   * 1) Baixa a ultima versão realease. ([versões realeases](https://github.com/paggi-com/woocommerce-paggi/releases))

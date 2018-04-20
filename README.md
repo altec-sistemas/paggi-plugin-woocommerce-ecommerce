@@ -10,7 +10,7 @@ Este é uma extensão para e-comerces que utilizam a plataforma WooCommerce. Ace
 ### Requisitos
 *  PHP 5.3+
 *  WordPress 3.8+
-*  WooCommerce 2.3+
+*  WooCommerce 3.3+
 *  Versão mais recente do [WooCommerce Extra Checkout Fields for Brazil](http://wordpress.org/plugins/woocommerce-extra-checkout-fields-for-brazil/).
 
 ### Instalação

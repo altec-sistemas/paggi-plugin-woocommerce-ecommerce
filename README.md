@@ -1,7 +1,7 @@
 
 ### PAGGI plugin Woocomerce
 
-- **Versão:** 
+- **Versão:** 1.0.0
 - **Licensa:** GNU General Public License v3.0
 
 ### Descrição
@@ -13,7 +13,7 @@ Este é uma extensão para e-comerces que utilizam a plataforma Woocomerce. Acei
 *  WooCommerce 2.3+
 
 ### Instalação
-  1 - Baixa a ultima versão realease.
+  1 - Baixa a ultima versão realease. ([versões realeases](https://github.com/paggi-com/woocommerce-paggi/releases))
   2 - Descomprima os arquivos e copie para dentro da pasta pasta de plugins do Wordpres (wp-content/plugins/).
   3 - Faça a ativação do plugin na area administrativa do Wordpres.
   

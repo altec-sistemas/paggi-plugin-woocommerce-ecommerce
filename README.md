@@ -41,3 +41,7 @@ Segue as opcões disponiveis:
 #### Desemvolvimento
 
  * **Sandbox** - Habilite o PAGGI sandbox para testar os pagamentos.
+ 
+#### Paggi
+
+Para mais informaçes entre em contato conosco: contato@paggi.com

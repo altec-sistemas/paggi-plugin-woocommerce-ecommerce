@@ -5,7 +5,7 @@
 - **Licensa:** GNU General Public License v3.0
 
 ### Descrição
-Este é uma extensão para e-comerces que utilizam a plataforma WooCommerce. Aceite pagamentos diramente em sua loja virtual por meio do gatway PAGGI.
+Este é uma extensão para e-comerces que utilizam a plataforma WooCommerce. Aceite pagamentos diramente em sua loja virtual por meio do gateway PAGGI.
 
 ### Requisitos
 *  PHP 5.3+
@@ -20,7 +20,7 @@ Este é uma extensão para e-comerces que utilizam a plataforma WooCommerce. Ace
   
 ### Configurar plugin PAGGI Woocomerce
 
-O plugin WooCommerce PAGGI  totalmente transaparente, sendo assim você configura-lo de acordo suas necessidades. Para isso acesso a área de **Plugins** no painel adminstrativo do Wordpress e clique em ```configure``` na opção **WooCommerce Paggi**.
+O plugin WooCommerce PAGGI  totalmente transaparente, sendo assim você pode configurá-lo de acordo suas necessidades. Para isso acesso a área de **Plugins** no painel adminstrativo do Wordpress e clique em ```configure``` na opção **WooCommerce Paggi**.
 Segue as opcões disponiveis:
 
 #### Geral

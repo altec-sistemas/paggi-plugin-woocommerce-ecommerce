@@ -14,9 +14,9 @@ Este é uma extensão para e-comerces que utilizam a plataforma WooCommerce. Ace
 *  Versão mais recente do [WooCommerce Extra Checkout Fields for Brazil](http://wordpress.org/plugins/woocommerce-extra-checkout-fields-for-brazil/).
 
 ### Instalação
-  * 1) Baixa a ultima versão realease. ([versões realeases](https://github.com/paggi-com/woocommerce-paggi/releases))
-  * 2) Descomprima os arquivos e copie para dentro da pasta pasta de plugins do Wordpres (wp-content/plugins/).
-  * 3) Faça a ativação do plugin na area administrativa do Wordpres.
+  1. Baixa a ultima versão realease. ([versões realeases](https://github.com/paggi-com/woocommerce-paggi/releases))  
+2. Descomprima os arquivos e copie para dentro da pasta pasta de plugins do Wordpres (wp-content/plugins/).
+3. Faça a ativação do plugin na area administrativa do Wordpres.
   
 ### Configurar plugin PAGGI Woocomerce
 

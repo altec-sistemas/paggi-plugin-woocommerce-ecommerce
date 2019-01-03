@@ -39,9 +39,9 @@ Segue as opcões disponiveis:
  * **Taxa de juros** - Valor da taxa de juros. Use 0 para parcelamento sem taxa de juros.
  * **Parcelamento sem juros** - Número de parcelas sem juros.
  
-#### Desemvolvimento
+#### Desenvolvimento
 
- * **Sandbox** - Habilite o PAGGI sandbox para testar os pagamentos.
+ * **Sandbox** - Habilite o PAGGI Sandbox para testar os pagamentos.
  
 #### Paggi
 

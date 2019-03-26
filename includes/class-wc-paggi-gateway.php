@@ -308,7 +308,7 @@ class WC_Paggi_Gateway extends WC_Payment_Gateway {
             if (!$paggi_customer_id) {
                 $name = $order->get_billing_first_name() . ' ' . $order->get_billing_last_name();
                 $email = $order->get_billing_email();
-                if ($order->get_meta('_billing_persontype') == '1') {
+                if (strlen($order->get_meta('_billing_cpf')) == 14) {
                     $document = $order->get_meta('_billing_cpf');
                 } else {
                     $document = $order->get_meta('_billing_cnpj');
@@ -506,7 +506,7 @@ class WC_Paggi_Gateway extends WC_Payment_Gateway {
         $user_info = get_userdata($user_id);
         $name = $user_info->first_name . ' ' . $user_info->last_name;
         $email = $user_info->user_email;
-        if ($user_info->billing_persontype == '1') {
+        if (strlen($user_info->billing_cpf) == 14) {
             $document = $user_info->billing_cpf;
         } else {
             $document = $user_info->billing_cnpj;

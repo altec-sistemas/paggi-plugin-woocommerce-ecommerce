@@ -1,7 +1,7 @@
 
 ### PAGGI plugin WooCommerce
 
-- **Versão realease:** v1.0.0
+- **Versão realease:** v0.3.3
 - **Licensa:** GNU General Public License v3.0
 
 ### Descrição

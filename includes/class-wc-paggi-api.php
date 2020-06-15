@@ -9,6 +9,11 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
+require_once(__DIR__.'/sdk/vendor/autoload.php');
+use \Paggi\SDK\EnviromentConfiguration;
+use \Paggi\SDK\Card;
+use \Paggi\SDK\Order;
+
 class WC_Paggi_API {
 
     /**
@@ -23,6 +28,8 @@ class WC_Paggi_API {
      */
     protected $gateway;
 
+    protected $enviroment;
+
     /**
      * Constructor.
      *
@@ -33,6 +40,17 @@ class WC_Paggi_API {
         $this->gateway = $gateway;
         add_action('wp_ajax_delcard', array($this, 'del_card'));
         add_action('wp_ajax_cancelregularpayment', array($this, 'cancel_regular_payment'));
+        if ($this->gateway->sandbox === 'yes') 
+        {
+            $this->enviroment = new \Paggi\SDK\EnvironmentConfiguration();
+            $this->enviroment->setEnv('Staging');
+        } else {
+            $this->enviroment = new \Paggi\SDK\EnvironmentConfiguration();
+            $this->enviroment->setEnv('Production');
+        }
+
+        $this->enviroment->setToken($this->gateway->token);
+        $this->enviroment->setPartnerIdByToken($this->gateway->token);
     }
 
     /**

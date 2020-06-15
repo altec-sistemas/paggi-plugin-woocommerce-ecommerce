@@ -215,7 +215,7 @@ class WC_Paggi_API {
             $order_id = $_REQUEST['order_id'];
         }
         $resource = new \Paggi\SDK\Order();
-        return $resource->create($data); 
+        return $resource->cancel($data); 
         if (isset($return['status']) && $return['status'] == 'cancelled') {
             $order = new WC_Order($order_id);
             $order->add_order_note(sprintf(__('Paggi: Transaction was canceled (id = %s.)', 'woocommerce-paggi'), $transaction_id));

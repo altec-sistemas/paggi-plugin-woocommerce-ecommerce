@@ -26,6 +26,7 @@ class WC_Paggi_Gateway extends WC_Payment_Gateway {
         $this->init_settings();
 
         // Define user set variables
+        $this->partner_id = $this->get_option('partner_id');
         $this->title = $this->get_option('paggi_title', 'Paggi');
         $this->description = $this->get_option('paggi_description');
         $this->instructions = $this->get_option('paggi_instructions', $this->description);

@@ -449,6 +449,21 @@ class WC_Paggi_Gateway extends WC_Payment_Gateway {
         }
     }
 
+    public function process_refund($order_id, $amount = null, $reason = '') {      
+        $order = wc_get_order($order_id);
+        $transaction_id = get_post_meta($order->id, 'paggi_transaction_id', true);
+        $result =  $this->api->cancel_regular_payment($transaction_id, $order_id);
+        if (isset($result->status) && $result->status == 'cancelled') {
+            $order->update_status('refunded', sprintf(__('Paggi: The transaction was refunded/canceled (id = %s.)', 'woocommerce-paggi'), $transaction_id));            
+            $order->add_order_note(sprintf(__('Paggi: Transaction was canceled (id = %s.)', 'woocommerce-paggi'), $transaction_id));
+            update_post_meta($order_id, 'paggi_canceled', 'TRUE');
+            //$this->process_refund($order_id);
+            wp_send_json(array('code' => '200', 'message' => __('Payment was canceled successfuly.', 'woocommerce-paggi')));
+        } else {
+            wp_send_json(array('code' => '500', 'message' => __('An error has occurred. Try Again', 'woocommerce-paggi')));
+        }
+    }
+
     /**
      * Get the smallest installment amount.
      *

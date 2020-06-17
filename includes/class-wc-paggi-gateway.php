@@ -411,43 +411,34 @@ class WC_Paggi_Gateway extends WC_Payment_Gateway {
      * @since 0.1.0
      * @param WC_Order $order
      * @param string $status
-     * @param string $transaction_id
+     * @param string $transaction_id 
      */
     public function process_order_status($order, $status, $transaction_id) {
-        if ('yes' === $this->debug) {
-            $this->log->add($this->id, 'Payment status for order ' . $order->get_order_number() . ' is now: ' . $status);
-        }
         update_post_meta($order->id, 'paggi_transaction_id', $transaction_id);
         switch ($status) {
-            case 'approved' :
+            case 'captured' :
                 if (!in_array($order->get_status(), array('processing', 'completed'), true)) {
-                    $order->update_status('processing', sprintf(__('Paggi: The transaction was authorized(id = %s.)', 'woocommerce-paggi'), $transaction_id));
+                    $order->update_status('completed', sprintf(__('Paggi: The transaction was authorized(id = %s.)', 'woocommerce-paggi'), $transaction_id));
                 }
                 // Changing the order for processing and reduces the stock.
                 $order->payment_complete();
                 break;
-            case 'cleared' :
+            case 'capture_pending' :
                 $order->update_status('on-hold', sprintf(__('Paggi: The transaction is being processed(id = %s.)', 'woocommerce-paggi'), $transaction_id));
                 break;
-            case 'registered' :
-                $order->update_status('on-hold', sprintf(__('Paggi: The banking ticket was issued but not paid yet(id = %s.)', 'woocommerce-paggi'), $transaction_id));
-                break;
-            case 'not_cleared' :
-            case 'declined' :
+            case 'capture_declined' :
                 $order->update_status('failed', sprintf(__('Paggi: The transaction was rejected by the card company or by fraud(id = %s.)', 'woocommerce-paggi'), $transaction_id));
-
 
                 $transaction_id = get_post_meta($order->id, '_wc_paggi_transaction_id', true);
                 $this->send_email(
                         sprintf(esc_html__('The transaction for order %s was rejected by the card company or by fraud', 'woocommerce-paggi'), $order->get_order_number()), esc_html__('Transaction failed', 'woocommerce-paggi'), sprintf(esc_html__('Order %1$s has been marked as failed, because the transaction was rejected by the card company or by fraud. ID %2$s.', 'woocommerce-paggi'), $order->get_order_number(), $transaction_id)
                 );
-
                 break;
             case 'cancelled' :
-            case 'chargeback' :
+            case 'chargeback':
                 $order->update_status('refunded', sprintf(__('Paggi: The transaction was refunded/canceled (id = %s.)', 'woocommerce-paggi'), $transaction_id));
 
-                $transaction_id = get_post_meta($order->id, '_wc_paggi_transaction_id', true);
+                $transaction_id = get_post_meta($order->id, 'paggi_transaction_id', true);
 
                 $this->send_email(
                         sprintf(esc_html__('The transaction for order %s refunded', 'woocommerce-paggi'), $order->get_order_number()), esc_html__('Transaction refunded', 'woocommerce-paggi'), sprintf(esc_html__('Order %1$s has been marked as refunded by Paggi. ID %2$s', 'woocommerce-paggi'), $order->get_order_number(), $transaction_id)

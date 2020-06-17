@@ -324,102 +324,84 @@ class WC_Paggi_Gateway extends WC_Payment_Gateway {
      * @return array
      */
     public function process_payment($order_id) {
-
-        if (isset($_POST['payment_method']) && "paggi_gateway" === $_POST['payment_method']) {
-            $error = '';
-            $paggi_customer_id = wp_get_current_user()->paggi_id;
-            if (!$paggi_customer_id) {
-                $order = new WC_Order($order_id);
-                $paggi_customer_id = $order->get_meta('paggi_customer_id');
-            }
-            // not registered - guest
-            if (!$paggi_customer_id) {
+        $error = '';
+        $order = new WC_Order($order_id);
+        
+        if ('' === $error) {
+            if ($order->get_meta('_billing_persontype') == 1) {
+                $document = $order->get_meta('_billing_cpf');
                 $name = $order->get_billing_first_name() . ' ' . $order->get_billing_last_name();
-                $email = $order->get_billing_email();
-                if (strlen($order->get_meta('_billing_cpf')) == 14) {
-                    $document = $order->get_meta('_billing_cpf');
-                } else {
-                    $document = $order->get_meta('_billing_cnpj');
-                }
-                $phone = $order->get_billing_phone();
-                $street = $order->get_billing_address_1() . ' ' . $order->get_billing_address_2() . ' ' . $order->get_meta('_billing_number');
-                $district = $order->get_meta('_billing_neighborhood');
-                $city = $order->get_billing_city();
-                $state = $order->get_billing_state();
-                $zip = $order->get_billing_postcode();
-
-                $result = $this->api->set_customer($name, $email, $document, $phone, $street, $district, $city, $state, $zip);
-
-                if (isset($result['id'])) {
-                    $paggi_customer_id = $result['id'];
-                    update_post_meta($order_id, 'paggi_customer_id', $paggi_customer_id);
-                } else {
-                    if (isset($result['error'])) {
-                        $error .= '<b>' . $result['error'][0]['param'] . "</b> " . $result['error'][0]['message'] . '<br/>';
-                    } else {
-                        $error .= $result['errors'][0]['message'] . '<br/>';
-                    }
-                }
-            }
-            if ('' === $error) {
-                // card register
-                if (isset($paggi_customer_id) && !isset($_POST['card_id']) && isset($_POST['cc_number'])) {
-                    $result = $this->api->set_card($paggi_customer_id, $_POST['cc_name'], $_POST['cc_number'], $_POST['cc_expiry'], $_POST['cc_cvc']);
-                    if (isset($result['id'])) {
-                        $card_id = $result['id'];
-                    } else {
-                        if (isset($result['error'])) {
-                            $error .= '<b>' . $result['error'][0]['param'] . "</b> " . $result['error'][0]['message'] . '<br/>';
-                        } else {
-                            $error .= $result['errors'][0]['message'] . '<br/>';
-                        }
-                    }
-                } else {
-                    $card_id = $_POST['card_id'];
-                }
-            }
-            if ('' === $error) {
-                // payment process
-                $value = $_POST['tot'];
-                if ($_POST['installments'] != '1') {
-                    $value = $this->get_installments($value, $_POST['installments']);
-                }
-                $result = $this->api->process_regular_payment($value, $paggi_customer_id, $card_id, $_POST['installments']);
-                if ('yes' === $this->debug) {
-
-                    $this->log->add($this->id, "Amount: ".$value."; Customer_id: ".$paggi_customer_id."; Card id :".$card_id."; Installments: ".$_POST['installments']);
-                }
-                if (isset($result['id'])) {
-                    $transaction_id = $result['id'];
-
-                    $order = wc_get_order($order_id);
-
-                    $this->process_order_status($order, $result['status'], $transaction_id);
-
-                    // Reduce stock levels
-                    $order->reduce_order_stock();
-
-                    // Remove cart
-                    WC()->cart->empty_cart();
-                } else {
-                    if (isset($result['error'])) {
-                        $error .= '<b>' . $result['error'][0]['param'] . "</b> " . $result['error'][0]['message'] . '<br/>';
-                    } else {
-                        $error .= $result['errors'][0]['message'] . '<br/>';
-                    }
-                }
-            }
-
-            if ('' === $error) {
-                // Return thankyou redirect
-                return array(
-                    'result' => 'success',
-                    'redirect' => $this->get_return_url($order)
-                );
             } else {
-                wc_add_notice(__('Payment error: ', 'woocommerce-paggi') . ucwords($error), 'error');
-                return;
+                $document = $order->get_meta('_billing_cnpj');
+                $name = $order->get_billing_company();
             }
+            $external_identifier = strtr($order->order_key, array('wc_order_' => ''));
+            $ip = $order->customer_ip_address;
+            $document = strtr($document, array('-' => '','.' => ''));
+            $email = $order->get_billing_email();
+            $phone = $order->get_billing_phone();
+            $street = $order->get_billing_address_1();
+            $neighborhood = $order->get_meta('_billing_neighborhood');
+            $city = $order->get_billing_city();
+            $state = $order->get_billing_state();
+            $zipcode = $order->get_billing_postcode();
+            $number = $order->get_meta('_billing_number');
+            $complement = $order->get_billing_address_2();
+            // payment process
+            $amount = $_POST['tot'];
+            $installments = $_POST['installments'];
+
+
+        if ('' === $error) {
+            // card register
+            if (!isset($_POST['card_id']) && isset($_POST['cc_number'])) {
+                $result = $this->api->set_card($_POST['cc_name'], $document, $_POST['cc_number'], $_POST['cc_expiry'], $_POST['cc_cvc']);
+                if (isset($result->id)) {
+                    $card_id = $result->id;
+                } else {
+                    if (isset($result['error'])) {
+                        $error .= '<b>' . $result['error'][0]['param'] . "</b> " . $result['error'][0]['message'] . '<br/>';
+                    } else {
+                        $error .= $result['errors'][0]['message'] . '<br/>';
+                    }
+                }
+            } else {
+                $card_id = $_POST['card_id'];
+            }
+        }
+           
+        $result = $this->api->process_payment($card_id, $installments, $amount, $name, $email, $document, $phone, $street, $neighborhood, $zipcode, $city, $state, $number, $complement, $ip, $external_identifier);
+
+        if (isset($result->id)) {
+            $transaction_id = $result->id;
+
+            $order = wc_get_order($order_id);
+
+            $this->process_order_status($order, $result->status, $transaction_id);
+
+            // Reduce stock levels
+            $order->reduce_order_stock();
+
+            // Remove cart
+            WC()->cart->empty_cart();
+        } else {
+            if (isset($result['error'])) {
+                $error .= '<b>' . $result['error'][0]['param'] . "</b> " . $result['error'][0]['message'] . '<br/>';
+            } else {
+                $error .= $result['errors'][0]['message'] . '<br/>';
+                }
+            }
+        }
+
+        if ('' === $error) {
+            // Return thankyou redirect
+            return array(
+                'result' => 'success',
+                'redirect' => $this->get_return_url($order)
+            );
+        } else {
+            wc_add_notice(__('Payment error: ', 'woocommerce-paggi') . ucwords($error), 'error');
+            return;
         }
     }
 

@@ -138,17 +138,36 @@ class WC_Paggi_API {
     public function process_payment($card_id, $installments, $amount, $name, $email, $document, $phone, $street, $neighborhood,
      $zipcode, $city, $state, $number, $complement, $ip, $external_identifier)
     {
-        if ($complement !== '' && $neighborhood !== ''){ 
+        if ($complement === '' && $neighborhood === ''){ 
             $data = array( 
                 'ip' => '127.0.0.1',
                 'external_identifier' => $external_identifier,
-                'charges' => array(
+                'charges' => array(array(
                     'installments' => $this->only_numbers($installments),
                     'amount' => $this->only_numbers($amount),
                     'card' => array (
                         'id' => $card_id
                     )
-                ), 
+                )), 
+                'customer' => array(
+                    'name' => $name,
+                    'email' => $email,
+                    'document' => $this->only_numbers($document),
+                    'phone1' => $this->only_numbers($phone),
+                    
+                )
+            );
+        } else {
+            $data = array( 
+                'ip' => '127.0.0.1',
+                'external_identifier' => $external_identifier,
+                'charges' => array(array(
+                    'installments' => $this->only_numbers($installments),
+                    'amount' => $this->only_numbers($amount),
+                    'card' => array (
+                        'id' => $card_id
+                    )
+                )), 
                 'customer' => array(
                     'name' => $name,
                     'email' => $email,
@@ -165,25 +184,7 @@ class WC_Paggi_API {
                     )
                 )
             );
-        } else {
-            $data = array( 
-                'ip' => '127.0.0.1',
-                'external_identifier' => $external_identifier,
-                'charges' => array(
-                    'installments' => $this->only_numbers($installments),
-                    'amount' => $this->only_numbers($amount),
-                    'card' => array (
-                        'id' => $card_id
-                    )
-                ), 
-                'customer' => array(
-                    'name' => $name,
-                    'email' => $email,
-                    'document' => $this->only_numbers($document),
-                    'phone1' => $this->only_numbers($phone)
-                )
-            );
-            }
+        }
 
         $resource = new \Paggi\SDK\Order();
 

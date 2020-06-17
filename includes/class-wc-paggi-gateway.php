@@ -532,7 +532,7 @@ class WC_Paggi_Gateway extends WC_Payment_Gateway {
         $district = $user_info->billing_neighborhood;
         $city = $user_info->billing_city;
         $state = $user_info->billing_state;
-        $zip = $user_info->billing_postcode;
+        $zipcode = $user_info->billing_postcode;
         $paggi_customer_id = $user_info->paggi_id;
         // setting up user display name
         wp_update_user(array('ID' => $user_id, 'display_name' => $name));
@@ -543,8 +543,8 @@ class WC_Paggi_Gateway extends WC_Payment_Gateway {
         }
         switch ($result['Status']['Code']) {
             case '200':
-                add_user_meta($user_id, 'paggi_id', $result['id'], true);
-                return $result['id'];
+                add_user_meta($user_id, 'paggi_id', $result->id, true);
+                return $result->id;
                 break;
             default:
                 include dirname(__FILE__) . '/views/html-receipt-page-error.php';

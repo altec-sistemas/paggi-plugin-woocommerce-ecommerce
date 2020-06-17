@@ -211,20 +211,8 @@ class WC_Paggi_API {
      */
 
     public function cancel_regular_payment($transaction_id, $order_id) {
-        if ($transaction_id == "" && isset($_REQUEST['data'])) {
-            $transaction_id = $_REQUEST['data'];
-            $order_id = $_REQUEST['order_id'];
-        }
         $resource = new \Paggi\SDK\Order();
-        return $resource->cancel($data); 
-        if (isset($return['status']) && $return['status'] == 'cancelled') {
-            $order = new WC_Order($order_id);
-            $order->add_order_note(sprintf(__('Paggi: Transaction was canceled (id = %s.)', 'woocommerce-paggi'), $transaction_id));
-            update_post_meta($order_id, 'paggi_canceled', 'TRUE');
-            wp_send_json(array('code' => '200', 'message' => __('Payment was canceled successfuly.', 'woocommerce-paggi')));
-        } else {
-            wp_send_json(array('code' => '500', 'message' => __('An error has occurred. Try Again', 'woocommerce-paggi')));
-        }
+        return $resource->cancel($transaction_id);    
     }
 
 
@@ -232,8 +220,8 @@ class WC_Paggi_API {
      *  inactivate a card in Paggi
      *
      * @since 0.1.0
-     * @param string $card_id     *
-     * @param string $partner_id     *
+     * @param string $card_id
+     * @param string $partner_id    
      */
     public function del_card($card_id, $partner_id) {
         if ($card_id == "" && isset($_REQUEST['data'])) {

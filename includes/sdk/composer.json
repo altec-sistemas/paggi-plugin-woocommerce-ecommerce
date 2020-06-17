@@ -1,0 +1,5 @@
+{
+    "require": {
+        "paggi/sdk-ecommerce": "^2.1"
+    }
+}

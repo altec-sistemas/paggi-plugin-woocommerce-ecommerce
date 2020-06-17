@@ -287,7 +287,6 @@ class WC_Paggi_Gateway extends WC_Payment_Gateway {
         if ($installments > $this->max_installment) {
             $installments = $this->max_installment;
         }
-        //$this->log->add($this->id, "$installments max $this->max_installment");
         for ($i = 2; $i <= $installments; $i++) {
             if ($i <= $this->free_installments) {
                 $return[$i] = number_format((float) $cart_total / $i, 2, '.', '');//$i

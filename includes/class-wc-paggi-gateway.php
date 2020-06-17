@@ -298,6 +298,24 @@ class WC_Paggi_Gateway extends WC_Payment_Gateway {
         return $return;
     }
 
+    public function create_card($partner_id) 
+    {
+        if (!isset($_POST['card_id']) && isset($_POST['cc_number'])) {
+            $result = $this->api->set_card($_POST['cc_name'], $_POST['cc_number'], $_POST['cc_expiry'], $_POST['cc_cvc']);
+            if (isset($result->id)) {
+                $card_id = $result->id;
+            } else {
+                if (isset($result['error'])) {
+                    $error .= '<b>' . $result['error'][0]['param'] . "</b> " . $result['error'][0]['message'] . '<br/>';
+                } else {
+                    $error .= $result['errors'][0]['message'] . '<br/>';
+                }
+            }
+        } else {
+            $card_id = $_POST['card_id'];
+        }
+    }
+
     /**
      * Process the payment and return the result
      *

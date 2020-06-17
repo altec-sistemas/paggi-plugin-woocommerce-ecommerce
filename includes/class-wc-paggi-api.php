@@ -17,11 +17,6 @@ use \Paggi\SDK\Order;
 class WC_Paggi_API {
 
     /**
-     * API URL.
-     */
-    // const API_URL = 'https://api.stg.paggi.com/v1';
-
-    /**
      * Gateway class.
      *
      * @var WC_Gateway_Paggi
@@ -192,16 +187,6 @@ class WC_Paggi_API {
     }
 
     /**
-     * Get order
-     *
-     * @since 0.1.0
-     * @param string $partner_id
-     * @param string $order_id
-     * @return array
-     */
-
-
-    /**
      * Void order
      *
      * @since 0.1.0
@@ -209,12 +194,10 @@ class WC_Paggi_API {
      * @param string $order_id
      * @return array
      */
-
     public function cancel_regular_payment($transaction_id, $order_id) {
         $resource = new \Paggi\SDK\Order();
         return $resource->cancel($transaction_id);    
     }
-
 
     /**
      *  inactivate a card in Paggi

@@ -15,11 +15,11 @@ class WC_Paggi_Gateway extends WC_Payment_Gateway {
     public function __construct() {
 
         $this->id = 'paggi_gateway';
-        //$this->icon = apply_filters('woocommerce_paggi_icon', plugins_url('assets/images/paggi.png', plugin_dir_path(__FILE__)));
         $this->has_fields = false;
         $this->method_title = __('Paggi', 'woocommerce-paggi');
         $this->method_description = __('Accept payments by credit card using the Paggi.', 'woocommerce-paggi');//
         $this->order_button_text = __('Proceed to payment', 'woocommerce-paggi');
+        $this->supports[] = 'refunds';
 
         // Load the settings.
         $this->init_form_fields();

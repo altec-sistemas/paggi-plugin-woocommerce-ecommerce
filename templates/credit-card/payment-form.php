@@ -67,15 +67,15 @@ if ($cards) {
 <br/>
 <div id="card-wrapper"></div><br/>
 <p class="form-row form-row-wide">
-    <label for="cc_number"><?php esc_html_e('Card number', 'woocommerce-paggi'); ?> <span class="required">*</span></label>
+    <label for="cc_number"><?php esc_html_e('Número do cartão', 'woocommerce-paggi'); ?> <span class="required">*</span></label>
     <input placeholder="<?php _e('Card number', 'woocommerce-paggi'); ?> " type="tel" name = "cc_number"id="cc_number" class="cc required" size="20" >
 </p>
 <p class="form-row form-row-wide">
-    <label for="cc_name"><?php esc_html_e('Full name', 'woocommerce-paggi'); ?> <span class="required">*</span></label>
+    <label for="cc_name"><?php esc_html_e('Nome completo', 'woocommerce-paggi'); ?> <span class="required">*</span></label>
     <input placeholder="<?php _e('Full name', 'woocommerce-paggi'); ?> " type="text" name = "cc_name" id="cc_name" class="cc required" size="20">
 </p>
 <p class="form-row form-row-wide">
-    <label for="cc_expiry"><?php esc_html_e('Expires', 'woocommerce-paggi'); ?> <span class="required">*</span></label>
+    <label for="cc_expiry"><?php esc_html_e('Vencimento', 'woocommerce-paggi'); ?> <span class="required">*</span></label>
 
     <input placeholder="<?php _e('MM/YY', 'woocommerce-paggi'); ?> " type="tel" name = "cc_expiry" id="cc_expiry" class="cc required" size="10">
 
@@ -88,7 +88,7 @@ if ($cards) {
 </p>
 <div class="clear"></div>
 <p class="form-row form-row-wide">
-    <label for="installments"><?php esc_html_e('Installments', 'woocommerce-paggi'); ?> <span class="required">*</span></label>
+    <label for="installments"><?php esc_html_e('Parcelamento', 'woocommerce-paggi'); ?> <span class="required">*</span></label>
     <select name="installments" id="paggi-installments" class="cc required">
         <?php
         foreach ($installments as $number => $installment) :

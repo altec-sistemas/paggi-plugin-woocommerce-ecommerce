@@ -25,6 +25,7 @@ Segue as opcões disponiveis:
 
 #### Geral
 
+ * **ID PAGGI** - Insira seu ID PAGGI para realizar transações.
  * **Habilitar/Desabilitar** - Mantenha essa opção sempre ativa para que você possa receber pagamentos via PAGGI.
  * **Título** - Esse é o titulo do método de pagamento que o cliente vê durante o checkout.
  * **Descrição** - Descrição do método de pagamento que o cliente verá na sua conta.

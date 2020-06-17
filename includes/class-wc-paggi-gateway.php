@@ -67,33 +67,38 @@ class WC_Paggi_Gateway extends WC_Payment_Gateway {
     public function init_form_fields() {
 
         $this->form_fields = apply_filters('wc_paggi_form_fields', array(
+            'partner_id' => array(
+                'title' => __('ID PAGGI', 'woocommerce-paggi'),
+                'type' => 'text',
+                'description' => ('Id de identificação PAGGI'),
+            ),
             'general' => array(
                 'title' => __('General', 'woocommerce-paggi'),
                 'type' => 'title',
                 'description' => '',
             ),
             'enabled' => array(
-                'title' => __('Enable/Disable', 'woocommerce-paggi'),
+                'title' => __('Habilitar / Desabilitar', 'woocommerce-paggi'),
                 'type' => 'checkbox',
-                'label' => __('Enable Paggi Payment', 'woocommerce-paggi'),
-                'default' => 'yes'
+                'label' => __('Pagamento Paggi', 'woocommerce-paggi'),
+                'default' => 'yes',
             ),
             'paggi_title' => array(
-                'title' => __('Title', 'woocommerce-paggi'),
+                'title' => __('Título', 'woocommerce-paggi'),
                 'type' => 'text',
                 'description' => __('This controls the title for the payment method the customer sees during checkout.', 'woocommerce-paggi'),
-                'default' => __('Paggi Payment', 'woocommerce-paggi'),
+                'default' => __('Pagamento Paggi', 'woocommerce-paggi'),
                 'desc_tip' => true,
             ),
             'paggi_description' => array(
-                'title' => __('Description', 'woocommerce-paggi'),
+                'title' => __('Descrição', 'woocommerce-paggi'),
                 'type' => 'textarea',
                 'description' => __('Payment method description that the customer will see on your checkout.', 'woocommerce-paggi'),
                 'default' => __('Please remit payment to Store Name upon pickup or delivery.', 'woocommerce-paggi'),
                 'desc_tip' => true,
             ),
             'paggi_instructions' => array(
-                'title' => __('Instructions', 'woocommerce-paggi'),
+                'title' => __('Instruções', 'woocommerce-paggi'),
                 'type' => 'textarea',
                 'description' => __('Instructions that will be added to the thank you page and emails.', 'woocommerce-paggi'),
                 'default' => '',
@@ -102,20 +107,20 @@ class WC_Paggi_Gateway extends WC_Payment_Gateway {
             'paggi_token' => array(
                 'title' => __('Token', 'woocommerce-paggi'),
                 'type' => 'text',
-                'description' => __('Please enter your Paggi token. This is needed to process the payment.', 'woocommerce-paggi'),
+                'description' => __('Insira o token da Paggi para processar pagamentos.', 'woocommerce-paggi'),
                 'default' => '',
             ),
             'installments' => array(
-                'title' => __('Installments', 'woocommerce-paggi'),
+                'title' => __('Parcelamentos', 'woocommerce-paggi'),
                 'type' => 'title',
                 'description' => '',
             ),
             'max_installment' => array(
-                'title' => __('Number of Installment', 'woocommerce-paggi'),
+                'title' => __('Número de parcelas', 'woocommerce-paggi'),
                 'type' => 'select',
                 'class' => 'wc-enhanced-select',
                 'default' => '12',
-                'description' => __('Maximum number of installments possible with payments by credit card.', 'woocommerce-paggi'),
+                'description' => __('Número máximo de parcelas possível com pagamento por cartão de crédito.', 'woocommerce-paggi'),
                 'desc_tip' => true,
                 'options' => array(
                     '1' => '1',
@@ -133,25 +138,25 @@ class WC_Paggi_Gateway extends WC_Payment_Gateway {
                 ),
             ),
             'smallest_installment' => array(
-                'title' => __('Smallest Installment', 'woocommerce-paggi'),
+                'title' => __('Valor mínimo de parcela', 'woocommerce-paggi'),
                 'type' => 'text',
-                'description' => __('Please enter with the value of smallest installment.', 'woocommerce-paggi'),
+                'description' => __('Informe qual o valor mínimo aceito para parcela.', 'woocommerce-paggi'),
                 'desc_tip' => true,
                 'default' => '5',
             ),
             'interest_rate' => array(
-                'title' => __('Interest rate', 'woocommerce-paggi'),
+                'title' => __('Taxa de juros', 'woocommerce-paggi'),
                 'type' => 'text',
-                'description' => __('Please enter with the interest rate amount. Note: use 0 to not charge interest.', 'woocommerce-paggi'),
+                'description' => __('Valor da taxa de juros. Use 0 para parcelamento sem taxa de juros.', 'woocommerce-paggi'),
                 'desc_tip' => true,
                 'default' => '0',
             ),
             'free_installments' => array(
-                'title' => __('Free Installments', 'woocommerce-paggi'),
+                'title' => __('Parcelamento sem juros', 'woocommerce-paggi'),
                 'type' => 'select',
                 'class' => 'wc-enhanced-select',
                 'default' => '1',
-                'description' => __('Number of installments with interest free.', 'woocommerce-paggi'),
+                'description' => __('Número de parcelas sem juros.', 'woocommerce-paggi'),
                 'desc_tip' => true,
                 'options' => array(
                     '0' => _x('None', 'no free installments', 'woocommerce-paggi'),
@@ -169,15 +174,19 @@ class WC_Paggi_Gateway extends WC_Payment_Gateway {
                     '12' => '12',
                 ),
             ),
+            'debit_card' => array(
+                'title' => __('Cartão de débito', 'woocommerce-paggi'),
+                'type' => 'checkbox',
+            ),
             'development' => array(
-                'title' => __('Development', 'woocommerce-paggi'),
+                'title' => __('Desenvolvimento', 'woocommerce-paggi'),
                 'type' => 'title',
                 'description' => '',
             ),
             'paggi_sandbox' => array(
-                'title' => __('Sandbox', 'woocommerce-paggi'),
+                'title' => __('Ambiente de Teste Paggi', 'woocommerce-paggi'),
                 'type' => 'checkbox',
-                'label' => __('Enable Paggi Sandbox', 'woocommerce-paggi'),
+                'label' => __('Habilitar ambiente de teste Paggi', 'woocommerce-paggi'),
                 'desc_tip' => true,
                 'default' => 'no',
                 'description' => __('Paggi Sandbox can be used to test the payments.', 'woocommerce-paggi'),
@@ -185,7 +194,7 @@ class WC_Paggi_Gateway extends WC_Payment_Gateway {
             'paggi_debug' => array(
                 'title' => __('Debug Log', 'woocommerce-paggi'),
                 'type' => 'checkbox',
-                'label' => __('Enable logging', 'woocommerce-paggi'),
+                'label' => __('Habilitar logs', 'woocommerce-paggi'),
                 'default' => 'no',
                 'description' => sprintf(__('Log Paggi events, such as API requests, inside %s', 'woocommerce-paggi'), $this->get_log_view()),
             )

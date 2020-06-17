@@ -494,7 +494,7 @@ class WC_Paggi_Gateway extends WC_Payment_Gateway {
      * @return string
      */
     public function get_token() {
-        return 'yes' === $this->sandbox ? 'B31DCE74-E768-43ED-86DA-85501612548F' : $this->token;
+        return 'yes' === $this->sandbox ? 'eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJQQUdHSSIsImV4cCI6NjIwNjAzMzA3ODYsImlhdCI6MTU4MDMzMDc4NiwiaXNzIjoiUEFHR0kiLCJqdGkiOiI0NDk1NTU2OS00YTY3LTRmYmItODdlZC04NzUwMmIxNjQ4MDAiLCJuYmYiOjE1ODAzMzA3ODUsInBlcm1pc3Npb25zIjpbeyJwYXJ0bmVyX2lkIjoiMjdhODJjZTEtMmJlMi00NjRhLWJmM2YtOGQyZTE5NjVkMzQwIiwicGVybWlzc2lvbnMiOlsic3lzdGVtX3VzZXIiXX1dLCJzdWIiOiI3MWEzZmM1Ny0yOTBiLTQzNDYtYTgwOC0yOTVkZjM3NmE2NmEiLCJ0eXAiOiJhY2Nlc3MifQ.ZTVGFSsfQaFWnIgXgKmdtY1YUPOInyYBCYf3Ft218VnzFpnYGdnt5MSINq7RtqOlLYy_MIBuIkfZcOSEE4jwhA' : $this->token;
     }
 
     /**

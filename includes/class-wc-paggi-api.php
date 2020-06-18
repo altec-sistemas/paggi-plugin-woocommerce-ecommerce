@@ -135,8 +135,8 @@ class WC_Paggi_API {
     {
         if ($complement === '' && $neighborhood === ''){ 
             $data = array( 
-                'ip' => '127.0.0.1',
-                'external_identifier' => $external_identifier,
+                'ip' => $ip,
+                'external_identifier' => strval($external_identifier),
                 'charges' => array(array(
                     'installments' => $this->only_numbers($installments),
                     'amount' => $this->only_numbers($amount),
@@ -154,8 +154,8 @@ class WC_Paggi_API {
             );
         } else {
             $data = array( 
-                'ip' => '127.0.0.1',
-                'external_identifier' => $external_identifier,
+                'ip' => $ip,
+                'external_identifier' => strval($external_identifier),
                 'charges' => array(array(
                     'installments' => $this->only_numbers($installments),
                     'amount' => $this->only_numbers($amount),

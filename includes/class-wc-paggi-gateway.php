@@ -325,7 +325,7 @@ class WC_Paggi_Gateway extends WC_Payment_Gateway {
     public function process_payment($order_id) {
         $error = '';
         $order = new WC_Order($order_id);
-        
+
         if ('' === $error) {
             if ($order->get_meta('_billing_persontype') == 1) {
                 $document = $order->get_meta('_billing_cpf');
@@ -350,13 +350,6 @@ class WC_Paggi_Gateway extends WC_Payment_Gateway {
             $amount = $_POST['tot'];
             $installments = $_POST['installments'];
 
-            if (!empty($_SERVER['HTTP_CLIENT_IP'])) {
-                $ip = $_SERVER['HTTP_CLIENT_IP'];
-            } elseif (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
-                $ip = $_SERVER['HTTP_X_FORWARDED_FOR'];
-            } else {
-                $ip = $_SERVER['REMOTE_ADDR'];
-            }
 
         if ('' === $error) {
             // card register

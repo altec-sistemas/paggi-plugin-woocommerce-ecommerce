@@ -334,7 +334,8 @@ class WC_Paggi_Gateway extends WC_Payment_Gateway {
                 $document = $order->get_meta('_billing_cnpj');
                 $name = $order->get_billing_company();
             }
-            $external_identifier = $order_id;
+            $external_identifier = $order->get_id();
+            $ip = $order->get_customer_ip_address();
             $document = strtr($document, array('-' => '','.' => ''));
             $email = $order->get_billing_email();
             $phone = $order->get_billing_phone();

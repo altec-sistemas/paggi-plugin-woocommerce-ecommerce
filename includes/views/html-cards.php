@@ -70,6 +70,9 @@
                     <input placeholder="<?php _e('CVC', 'woocommerce-paggi'); ?> " type="tel" name = "cc_cvc" id="cc_cvc" class="cc required" size="10">
                 </div>
                 <div class="row">
+                    <input placeholder="<?php _e('Documento', 'woocommerce-paggi'); ?> " type="tel" name = "cc_document" id="cc_document" class="cc required" size="10">
+                </div>
+                <div class="row">
                     <input id="card_type" name="card_type" type="hidden">
                 </div>
             </div>
@@ -88,7 +91,8 @@
                 numberInput: '#cc_number',
                 expiryInput: '#cc_expiry',
                 cvcInput: '#cc_cvc',
-                nameInput: '#cc_name'
+                nameInput: '#cc_name',
+                documentInput: '#cc_document'
             }
         });
         jQuery('#cc_number').validateCreditCard(function (result) {

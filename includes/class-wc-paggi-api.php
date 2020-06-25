@@ -111,6 +111,21 @@ class WC_Paggi_API {
     }
 
     /**
+     * Get all partner cards from a document customer 
+     *
+     * @since 0.1.0
+     * @param string $document
+     * @return array
+     */
+    public function get_card($document) {
+        $data = array("document" => $document);
+
+        $resource = new \Paggi\SDK\Card();
+
+        return $resource->find($data);
+    }
+
+    /**
     * create a card to a order
     *
     * @since 0.1.0

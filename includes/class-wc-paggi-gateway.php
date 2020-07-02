@@ -228,34 +228,56 @@ class WC_Paggi_Gateway extends WC_Payment_Gateway {
             wp_register_style('paggicss', PLUGIN_DIR_URL . 'assets/css/paggi.css');
             wp_enqueue_style('paggicss');
         }
-        $paggi_customer_id = wp_get_current_user()->paggi_id;
-        $cards = NULL;
-        if ($paggi_customer_id) {
-            $customer = $this->api->list_customer($paggi_customer_id);
-            foreach ($customer['cards'] as $key => $value) {
-                $cards[$key]['id'] = $value['id'];
-                $cards[$key]['name'] = $value['name'];
-                $cards[$key]['expires'] = $value['month'] . "/" . $value['year'];
-                $cards[$key]['brand'] = $value['brand'];
-                $cards[$key]['last4'] = $value['last4'];
+        $current_customer = get_user_meta(wp_get_current_user()->ID);
+        if (!isset($current_customer['billing_persontype']) || $current_customer['billing_persontype'][0] === NULL) {
+            $cards = NULL;
+            $installments = $this->get_installments_view($cart_total);
+    
+            wc_get_template('credit-card/payment-form.php', array(
+                'cart_total' => $cart_total,
+                'cards' => $cards,
+                'columns' => array(
+                    '1' => __('4 últimos dígitos', 'woocommerce-paggi'),
+                    '2' => __('Nome Completo', 'woocommerce-paggi'),
+                    '3' => __('Bandeira', 'woocommerce-paggi')
+                ),
+                'installments' => $installments,
+                    ), 'woocommerce/paggi/', WC_Paggi::get_templates_path());
+        } else {
+            $person_type = $current_customer['billing_persontype'][0];
+            $cards = NULL;
+
+            if ($person_type === '1'){
+                $document = $current_customer['billing_cpf'];
+            } else {
+                $document = $current_customer['billing_cnpj'];
             }
-        }
 
-        $installments = $this->get_installments_view($cart_total);
-        //print_r(array_values ($installments));
+            $json_response = $this->api->get_card($document);
+            $response = json_decode(json_encode($json_response), true);
 
-        wc_get_template('credit-card/payment-form.php', array(
-            'cart_total' => $cart_total,
-            'cards' => $cards,
-            'columns' => array(
-                '1' => __('Name', 'woocommerce-paggi'),
-                '2' => __('Expires', 'woocommerce-paggi'),
-                '3' => __('Brand', 'woocommerce-paggi'),
-                '4' => __('Last four', 'woocommerce-paggi'),
-                '5' => __('Action', 'woocommerce-paggi')
-            ),
-            'installments' => $installments,
-                ), 'woocommerce/paggi/', WC_Paggi::get_templates_path());
+            foreach ($response as $key => $value) {
+                $cards[$key]['id'] = $value['id'];
+                $cards[$key]['masked_number'] = $value['masked_number'];
+                $cards[$key]['holder'] = $value['holder']; 
+                $cards[$key]['brand'] = $value['brand'];           
+            }
+            
+            $installments = $this->get_installments_view($cart_total);
+    
+            wc_get_template('credit-card/payment-form.php', array(
+                'cart_total' => $cart_total,
+                'cards' => $cards,
+                'columns' => array(
+                    '1' => __('4 últimos dígitos', 'woocommerce-paggi'),
+                    '2' => __('Nome Completo', 'woocommerce-paggi'),
+                    '3' => __('Bandeira', 'woocommerce-paggi')
+                ),
+                'installments' => $installments,
+                    ), 'woocommerce/paggi/', WC_Paggi::get_templates_path());
+        }    
+    }
+        }    
     }
 
     /**

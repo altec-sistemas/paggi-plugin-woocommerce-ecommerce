@@ -358,7 +358,7 @@ class WC_Paggi_Gateway extends WC_Payment_Gateway {
             }
             $external_identifier = $order->get_id();
             $ip = $order->get_customer_ip_address();
-            $document = strtr($document, array('-' => '','.' => ''));
+            $document = strtr($document, array('-' => '','.' => '', '/' => ''));
             $email = $order->get_billing_email();
             $phone = $order->get_billing_phone();
             $street = $order->get_billing_address_1();

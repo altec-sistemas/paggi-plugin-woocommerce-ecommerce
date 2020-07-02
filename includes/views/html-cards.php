@@ -15,17 +15,15 @@
             foreach ($cards as $card) {
                 ?>
                 <tr class="woocommerce-orders-table__row order" id="<?php echo $card['id']; ?>">                    
+
                     <td class="woocommerce-orders-table__cell ">
-                        <?php echo $card['name'] ?>
+                        <?php echo $card['masked_number'] ?>
                     </td>
                     <td class="woocommerce-orders-table__cell ">
-                        <?php echo $card['expires'] ?>
+                        <?php echo $card['holder'] ?>
                     </td>
                     <td class="woocommerce-orders-table__cell ">
                         <?php echo $card['brand'] ?>
-                    </td>
-                    <td class="woocommerce-orders-table__cell ">
-                        <?php echo $card['last4'] ?>
                     </td>
                     <td class="woocommerce-orders-table__cell ">
                         <input type="button" class="woocommerce-Button button" name="remove_card" onclick="delcard('<?php echo $card['id']; ?>')" 

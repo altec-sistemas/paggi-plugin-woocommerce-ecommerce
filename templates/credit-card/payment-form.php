@@ -23,28 +23,21 @@ if ($cards) {
                 ?>
                 <tr class="woocommerce-orders-table__row order" id="<?php echo $card['id']; ?>">                    
                     <td class="woocommerce-orders-table__cell ">
-                        <?php echo $card['name'] ?>
+                        <?php echo $card['masked_number'] ?>
                     </td>
                     <td class="woocommerce-orders-table__cell ">
-                        <?php echo $card['expires'] ?>
+                        <?php echo $card['holder'] ?>
                     </td>
                     <td class="woocommerce-orders-table__cell ">
                         <?php echo $card['brand'] ?>
                     </td>
                     <td class="woocommerce-orders-table__cell ">
-                        <?php echo $card['last4'] ?>
-                    </td>
-                    <td class="woocommerce-orders-table__cell ">
                         <input name="card_id" type="radio" id="card_id_<?php echo $card['id'] ?>" value="<?php echo $card['id'] ?>">
                         <label for="card_id_<?php echo $card['id'] ?>"><?php _e('Use this Card', 'woocommerce-paggi'); ?></label>
-
                     </td>
                 </tr>
             <?php } ?>
             <tr class="woocommerce-orders-table__row order" id="">                    
-                <td class="woocommerce-orders-table__cell ">
-
-                </td>
                 <td class="woocommerce-orders-table__cell ">
 
                 </td>

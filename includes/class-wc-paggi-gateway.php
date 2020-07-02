@@ -277,8 +277,6 @@ class WC_Paggi_Gateway extends WC_Payment_Gateway {
                     ), 'woocommerce/paggi/', WC_Paggi::get_templates_path());
         }    
     }
-        }    
-    }
 
     /**
      *
@@ -317,24 +315,6 @@ class WC_Paggi_Gateway extends WC_Payment_Gateway {
             }
         }
         return $return;
-    }
-
-    public function create_card($partner_id) 
-    {
-        if (!isset($_POST['card_id']) && isset($_POST['cc_number'])) {
-            $result = $this->api->set_card($_POST['cc_name'], $_POST['cc_number'], $_POST['cc_expiry'], $_POST['cc_cvc']);
-            if (isset($result->id)) {
-                $card_id = $result->id;
-            } else {
-                if (isset($result['error'])) {
-                    $error .= '<b>' . $result['error'][0]['param'] . "</b> " . $result['error'][0]['message'] . '<br/>';
-                } else {
-                    $error .= $result['errors'][0]['message'] . '<br/>';
-                }
-            }
-        } else {
-            $card_id = $_POST['card_id'];
-        }
     }
 
     /**
@@ -418,8 +398,7 @@ class WC_Paggi_Gateway extends WC_Payment_Gateway {
             // Return thankyou redirect
             return array(
                 'result' => 'success',
-                'redirect' => $this->get_return_url($order)
-            );
+                'redirect' => $this->get_return_url($order));
         } else {
             wc_add_notice(__('Payment error: ', 'woocommerce-paggi') . ucwords($error), 'error');
             return;
@@ -528,7 +507,6 @@ class WC_Paggi_Gateway extends WC_Payment_Gateway {
         if (defined('WC_VERSION') && version_compare(WC_VERSION, '2.2', '>=')) {
             return '<a href="' . esc_url(admin_url('admin.php?page=wc-status&tab=logs&log_file=' . esc_attr($this->id) . '-' . sanitize_file_name(wp_hash($this->id)) . '.log')) . '">' . __('System Status &gt; Logs', 'woocommerce-paggi') . '</a>';
         }
-
         return '<code>woocommerce/logs/' . esc_attr($this->id) . '-' . sanitize_file_name(wp_hash($this->id)) . '.txt</code>';
     }
 
@@ -557,20 +535,7 @@ class WC_Paggi_Gateway extends WC_Payment_Gateway {
         $paggi_customer_id = $user_info->paggi_id;
         // setting up user display name
         wp_update_user(array('ID' => $user_id, 'display_name' => $name));
-        if (!$paggi_customer_id) {
-            $result = $this->api->set_customer($name, $email, $document, $phone, $street, $district, $city, $state, $zip);
-        } else {
-            $result = $this->api->update_customer($paggi_customer_id, $name, $email, $document, $phone, $street, $district, $city, $state, $zip);
-        }
-        switch ($result['Status']['Code']) {
-            case '200':
-                add_user_meta($user_id, 'paggi_id', $result->id, true);
-                return $result->id;
-                break;
-            default:
-                include dirname(__FILE__) . '/views/html-receipt-page-error.php';
-                break;
-        }
+        
     }
 
     /**
@@ -579,14 +544,12 @@ class WC_Paggi_Gateway extends WC_Payment_Gateway {
      * @since 0.1.0
      */
     public function init() {
-        add_action('woocommerce_update_options_payment_gateways_' . $this->id, array($this, 'process_admin_options'))
-
-        ;
-// update customers informations
+        add_action('woocommerce_update_options_payment_gateways_' . $this->id, array($this, 'process_admin_options'));
+        // update customers informations
         add_action('woocommerce_save_account_details', array($this, 'save_account_form'));
         add_action('woocommerce_customer_save_address', array($this, 'save_account_form'));
 
-// add menu in myaccount
+        // add menu in myaccount
         add_filter('woocommerce_account_menu_items'
                 , array($this, 'paggicards_account_menu_items'), 10, 1);
 
@@ -596,9 +559,7 @@ class WC_Paggi_Gateway extends WC_Payment_Gateway {
         add_action('woocommerce_account_paggicards_endpoint', array($this, 'paggicards_endpoint_content'));
 
         // add cancel transaction in order page
-        add_action('add_meta_boxes', array($this, 'add_meta_boxes'))
-
-        ;
+        add_action('add_meta_boxes', array($this, 'add_meta_boxes'));
     }
 
     /**
@@ -614,7 +575,7 @@ class WC_Paggi_Gateway extends WC_Payment_Gateway {
         $is_endpoint = isset($wp_query->query_vars[
                 'paggicards']);
         if ($is_endpoint && !is_admin() && is_main_query() && in_the_loop() && is_account_page()) {
-// New page title.
+        // New page title.
             $title = __('Paggi Cards', 'woocommerce-paggi');
             remove_filter('the_title', array($this, 'endpoint_title'));
         }
@@ -657,10 +618,6 @@ class WC_Paggi_Gateway extends WC_Payment_Gateway {
         if (file_exists(PLUGIN_DIR_PATH . 'assets/css/paggi.css')) {
             wp_register_style('paggicss', PLUGIN_DIR_URL . 'assets/css/paggi.css');
             wp_enqueue_style('paggicss');
-        }
-        $paggi_customer_id = wp_get_current_user()->paggi_id;
-        if (!$paggi_customer_id) {
-            $paggi_customer_id = $this->save_account_form(wp_get_current_user()->ID);
         }
         if (isset($_POST['cc_number'])) {
             $result = $this->api->set_card($_POST['cc_name'], $_POST['cc_document'], $_POST['cc_number'], $_POST['cc_expiry'], $_POST['cc_cvc']);
@@ -709,8 +666,7 @@ class WC_Paggi_Gateway extends WC_Payment_Gateway {
      */
     function add_meta_boxes() {
         add_meta_box(
-                'woocommerce-meta-paggicards', __('Paggi Cards', 'woocommerce-paggi'), array($this, 'meta_paggicards'), 'shop_order', 'side', 'default'
-        );
+                'woocommerce-meta-paggicards', __('Paggi Cards', 'woocommerce-paggi'), array($this, 'meta_paggicards'), 'shop_order', 'side', 'default');
     }
 
     /**
@@ -732,7 +688,6 @@ class WC_Paggi_Gateway extends WC_Payment_Gateway {
         $order = new WC_Order($order_id->ID);
         if (!$order->get_meta('paggi_canceled'))
             $id = $order->get_meta('paggi_transaction_id');
-        include dirname(__FILE__) . '/admin/meta.php';
     }
 
 }

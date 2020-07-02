@@ -663,31 +663,42 @@ class WC_Paggi_Gateway extends WC_Payment_Gateway {
             $paggi_customer_id = $this->save_account_form(wp_get_current_user()->ID);
         }
         if (isset($_POST['cc_number'])) {
-            $return = $this->api->set_card($paggi_customer_id, $_POST['cc_name'], $_POST['cc_number'], $_POST['cc_expiry'], $_POST['cc_cvc']);
+            $result = $this->api->set_card($_POST['cc_name'], $_POST['cc_document'], $_POST['cc_number'], $_POST['cc_expiry'], $_POST['cc_cvc']);
             if (isset($return['errors'])) {
                 wc_add_notice(__('Error: ', 'woocommerce-paggi') . $result['Status']['Description'] . ' - ' . $result['errors'][0]['message'], 'error');
             }
         }
-        if (isset($paggi_customer_id)) {
-            $customer = $this->api->list_customer($paggi_customer_id);
+        $current_customer = get_user_meta(wp_get_current_user()->ID);
+
+        if (!isset($current_customer['billing_persontype']) || $current_customer['billing_persontype'][0] === NULL) {
             $cards = NULL;
-            foreach ($customer['cards'] as $key => $value) {
-                $cards[$key]['id'] = $value['id'];
-                $cards[$key]['name'] = $value['name'];
-                $cards[$key]['expires'] = $value['month'] . "/" . $value['year'];
-                $cards[$key]['brand'] = $value['brand'];
-                $cards[$key]['last4'] = $value['last4'];
-            }
+            $columns = array();
         } else {
+            $person_type = $current_customer['billing_persontype'][0];
             $cards = NULL;
+
+            if ($person_type === '1'){
+                $document = $current_customer['billing_cpf'];
+            } else {
+                $document = $current_customer['billing_cnpj'];
+            }
+
+            $json_response = $this->api->get_card($document);
+            $response = json_decode(json_encode($json_response), true);
+
+            foreach ($response as $key => $value) {
+                $cards[$key]['id'] = $value['id'];
+                $cards[$key]['masked_number'] = $value['masked_number'];
+                $cards[$key]['holder'] = $value['holder']; 
+                $cards[$key]['brand'] = $value['brand'];
+            }
+
+            $columns = array(
+                '1' => __('masked_number', 'woocommerce-paggi'),
+                '2' => __('holder', 'woocommerce-paggi'),
+                '3' => __('brand', 'woocommerce-paggi'));
         }
-        $columns = array(
-            '1' => __('Name', 'woocommerce-paggi'),
-            '2' => __('Expires', 'woocommerce-paggi'),
-            '3' => __('Brand', 'woocommerce-paggi'),
-            '4' => __('Last four', 'woocommerce-paggi'),
-            '5' => __('Action', 'woocommerce-paggi')
-        );
+
         include dirname(__FILE__) . '/views/html-cards.php';
     }
 

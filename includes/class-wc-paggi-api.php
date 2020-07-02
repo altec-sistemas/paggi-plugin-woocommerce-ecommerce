@@ -75,13 +75,11 @@ class WC_Paggi_API {
         return preg_replace('([^0-9])', '', $string);
     }
 
-
      /**
      * create a card to a order
      *
      * @since 0.1.0
      * @param string $holder
-     * @param string $number
      * @param string $document
      * @param string $number
      * @param string $expire
@@ -123,7 +121,7 @@ class WC_Paggi_API {
         $data = array('document' => $this->only_numbers($document[0]));
 
         $resource = new \Paggi\SDK\Card();
-
+                
         return $resource->find($data);
     }
 
@@ -169,9 +167,7 @@ class WC_Paggi_API {
     * @param string $ip
     * @param string $external_identifier
     */
-    public function process_payment($card_id, $installments, $amount, $name, $email, $document, $phone, $street, $neighborhood,
-     $zipcode, $city, $state, $number, $complement, $ip, $external_identifier)
-    {
+    public function process_payment($card_id, $installments, $amount, $name, $email, $document, $phone, $street, $neighborhood, $zipcode, $city, $state, $number, $complement, $ip, $external_identifier) {
         if ($complement === '' && $neighborhood === ''){ 
             $data = array( 
                 'ip' => $ip,
@@ -221,8 +217,8 @@ class WC_Paggi_API {
         }
 
         $resource = new \Paggi\SDK\Order();
-
-        return $resource->create($data);    
+    
+        return $resource->create($data);
     }
 
     /**
@@ -236,27 +232,5 @@ class WC_Paggi_API {
     public function cancel_regular_payment($transaction_id, $order_id) {
         $resource = new \Paggi\SDK\Order();
         return $resource->cancel($transaction_id);    
-    }
-
-    /**
-     *  inactivate a card in Paggi
-     *
-     * @since 0.1.0
-     * @param string $card_id
-     * @param string $partner_id    
-     */
-    public function del_card($card_id, $partner_id) {
-        if ($card_id == "" && isset($_REQUEST['data'])) {
-            $card_id = $_REQUEST['data'];
-        }
-        $data = null;
-        $action = 'partners/'.$partner_id.'cards/' . $card_id;
-        $method = 'DELETE';
-        $return = $this->ws_comunicate($action, $method, $data);
-        if (isset($return['Status']['Code']) && $return['Status']['Code'] == '200') {
-            wp_send_json(array('code' => '200', 'message' => __('Card deleted successfuly.', 'woocommerce-paggi')));
-        } else {
-            wp_send_json(array('code' => '500', 'message' => __('An error has occurred. Try Again', 'woocommerce-paggi')));
-        }
     }
 }

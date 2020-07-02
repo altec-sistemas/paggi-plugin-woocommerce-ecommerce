@@ -83,6 +83,7 @@ class WC_Paggi_API {
      * @param string $holder
      * @param string $number
      * @param string $document
+     * @param string $number
      * @param string $expire
      * @param string $cvc
      * @return array

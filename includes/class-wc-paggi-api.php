@@ -128,6 +128,28 @@ class WC_Paggi_API {
     }
 
     /**
+     *  inactivate a card in Paggi
+     *
+     * @since 0.1.0
+     * @param string $card_id   
+     */
+    public function del_card($card_id) {
+        if ($card_id == "" && isset($_REQUEST['data'])) {
+            $card_id = $_REQUEST['data'];
+        }
+
+        $resource = new \Paggi\SDK\Card();
+        var_dump($resource->delete($card_id));
+
+        $return = $resource->delete($card_id);
+        if (isset($return['Status']['Code']) && $return['Status']['Code'] == '200') {
+            wp_send_json(array('code' => '200', 'message' => __('Card deleted successfuly.', 'woocommerce-paggi')));
+        } else {
+            wp_send_json(array('code' => '500', 'message' => __('An error has occurred. Try Again', 'woocommerce-paggi')));
+        }
+    }
+
+    /**
     * create a card to a order
     *
     * @since 0.1.0

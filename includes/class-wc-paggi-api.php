@@ -93,7 +93,8 @@ class WC_Paggi_API {
         $year = substr($expire, -4);
         $document = strtr($document, array(
             '-' => '',
-            '.' => ''
+            '.' => '',
+            '/' => ''
             )
         );
         $data = array(

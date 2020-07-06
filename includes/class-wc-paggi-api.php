@@ -144,11 +144,10 @@ class WC_Paggi_API {
         }
 
         $resource = new \Paggi\SDK\Card();
-        var_dump($resource->delete($card_id));
-
         $return = $resource->delete($card_id);
-        if (isset($return['Status']['Code']) && $return['Status']['Code'] == '200') {
-            wp_send_json(array('code' => '200', 'message' => __('Card deleted successfuly.', 'woocommerce-paggi')));
+        
+        if (isset($return->code) && $return->code == 204) {
+            wp_send_json(array('code' => '204', 'message' => __('Card deleted successfuly.', 'woocommerce-paggi')));
         } else {
             wp_send_json(array('code' => '500', 'message' => __('An error has occurred. Try Again', 'woocommerce-paggi')));
         }

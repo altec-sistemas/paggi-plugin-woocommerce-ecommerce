@@ -15,18 +15,14 @@
             foreach ($cards as $card) {
                 ?>
                 <tr class="woocommerce-orders-table__row order" id="<?php echo $card['id']; ?>">                    
-
                     <td class="woocommerce-orders-table__cell ">
-                        <?php echo $card['masked_number'] ?>
-                    </td>
-                    <td class="woocommerce-orders-table__cell ">
-                        <?php echo $card['holder'] ?>
+                        <?php echo $card['last4'] ?>
                     </td>
                     <td class="woocommerce-orders-table__cell ">
                         <?php echo $card['brand'] ?>
                     </td>
                     <td class="woocommerce-orders-table__cell ">
-                        <input type="button" class="woocommerce-Button button" name="remove_card" onclick="delcard('<?php echo $card['id']; ?>')" 
+                        <input type="button" class="woocommerce-Button button" name="remove_card" onclick="delcard('<?php echo $card['id'];?>')"
                                value=" <?php _e('Remove Card', 'woocommerce-paggi'); ?>">
                     </td>
                 </tr>
@@ -114,12 +110,12 @@
             dataType: "json",
             success: function (response) {
                 jQuery(".progressbar").hide();
-                if (response.code == '200') {
+                if (response.code == 204) {
                     jQuery('#error_msg').addClass('hide');
                     jQuery('#success_msg').removeClass('hide').html(response.message);
                     jQuery($id_class).addClass('hide');
-                    $tot = jQuery('#cards tbody tr').length;
-                    $hid = jQuery('#cards tbody tr.hide').length;
+                    $tot = jQuery('#cards tbody tr').remove;
+                    $hid = jQuery('#cards tbody tr.hide').remove;
                     if ($tot === $hid) {
                         jQuery('#nocards').removeClass('hide')
                     }

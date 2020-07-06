@@ -118,7 +118,14 @@ class WC_Paggi_API {
      * @return array
      */
     public function get_card($document) {
-        $data = array('document' => $this->only_numbers($document[0]));
+        $document = strtr($document[0], array(
+            '-' => '',
+            '.' => '',
+            '/' => ''
+            )
+        );
+        
+        $data = array('document' => $document);
 
         $resource = new \Paggi\SDK\Card();
                 

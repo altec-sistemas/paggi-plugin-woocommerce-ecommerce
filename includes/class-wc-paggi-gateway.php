@@ -265,8 +265,6 @@ class WC_Paggi_Gateway extends WC_Payment_Gateway {
                     $cards[$key]['id'] = $value['id'];
                     $cards[$key]['last4'] = substr($value['masked_number'], -4);
                     $cards[$key]['brand'] = $value['brand'];
-                $cards[$key]['brand'] = $value['brand'];           
-                    $cards[$key]['brand'] = $value['brand'];
                 }
     
                 $columns = array(
@@ -671,8 +669,6 @@ class WC_Paggi_Gateway extends WC_Payment_Gateway {
                     '1' => __('Last digits', 'woocommerce-paggi'),
                     '2' => __('brand', 'woocommerce-paggi'));
                 }
-            }    
-        }
             }    
 
         include dirname(__FILE__) . '/views/html-cards.php';

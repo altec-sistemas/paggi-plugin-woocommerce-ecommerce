@@ -253,25 +253,36 @@ class WC_Paggi_Gateway extends WC_Payment_Gateway {
                 $document = $current_customer['billing_cnpj'];
             }
 
+            $installments = $this->get_installments_view($cart_total);
             $json_response = $this->api->get_card($document);
             $response = json_decode(json_encode($json_response), true);
 
-            foreach ($response as $key => $value) {
-                $cards[$key]['id'] = $value['id'];
-                $cards[$key]['masked_number'] = $value['masked_number'];
-                $cards[$key]['holder'] = $value['holder']; 
+            if (isset($response['code']) && $response['code'] === 404){
+                $cards = NULL;
+                $columns = array();
+            } else {
+                foreach ($response as $key => $value) {
+                    $cards[$key]['id'] = $value['id'];
+                    $cards[$key]['last4'] = substr($value['masked_number'], -4);
+                    $cards[$key]['brand'] = $value['brand'];
                 $cards[$key]['brand'] = $value['brand'];           
-            }
+                    $cards[$key]['brand'] = $value['brand'];
+                }
+    
+                $columns = array(
+                    '1' => __('Last Digits', 'woocommerce-paggi'),
+                    '2' => __('Brand', 'woocommerce-paggi'),
+                    '3' => __('Action', 'woocommerce-paggi'));
+                }        
             
-            $installments = $this->get_installments_view($cart_total);
     
             wc_get_template('credit-card/payment-form.php', array(
                 'cart_total' => $cart_total,
                 'cards' => $cards,
                 'columns' => array(
-                    '1' => __('4 últimos dígitos', 'woocommerce-paggi'),
-                    '2' => __('Nome Completo', 'woocommerce-paggi'),
-                    '3' => __('Bandeira', 'woocommerce-paggi')
+                    '1' => __('Last Digits', 'woocommerce-paggi'),
+                    '2' => __('Brand', 'woocommerce-paggi'),
+                    '3' => __('Action', 'woocommerce-paggi')
                 ),
                 'installments' => $installments,
                     ), 'woocommerce/paggi/', WC_Paggi::get_templates_path());

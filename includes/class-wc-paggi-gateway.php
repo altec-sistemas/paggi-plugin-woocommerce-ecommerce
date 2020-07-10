@@ -666,8 +666,9 @@ class WC_Paggi_Gateway extends WC_Payment_Gateway {
                 }
     
                 $columns = array(
-                    '1' => __('Last digits', 'woocommerce-paggi'),
-                    '2' => __('brand', 'woocommerce-paggi'));
+                    '1' => __('Final do cartão', 'woocommerce-paggi'),
+                    '2' => __('Bandeira', 'woocommerce-paggi'),
+                    '3' => __('Excluir?', 'woocommerce-paggi'));
                 }
             }    
 

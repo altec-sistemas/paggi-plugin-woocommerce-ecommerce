@@ -278,9 +278,9 @@ class WC_Paggi_Gateway extends WC_Payment_Gateway {
                 'cart_total' => $cart_total,
                 'cards' => $cards,
                 'columns' => array(
-                    '1' => __('Last Digits', 'woocommerce-paggi'),
-                    '2' => __('Brand', 'woocommerce-paggi'),
-                    '3' => __('Action', 'woocommerce-paggi')
+                    '1' => __('Cartão', 'woocommerce-paggi'),
+                    '2' => __('Bandeira', 'woocommerce-paggi'),
+                    '3' => __('Ação', 'woocommerce-paggi')
                 ),
                 'installments' => $installments,
                     ), 'woocommerce/paggi/', WC_Paggi::get_templates_path());

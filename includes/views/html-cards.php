@@ -110,12 +110,12 @@
             dataType: "json",
             success: function (response) {
                 jQuery(".progressbar").hide();
-                if (response.code == 204) {
+                if (response.code == '204') {
                     jQuery('#error_msg').addClass('hide');
                     jQuery('#success_msg').removeClass('hide').html(response.message);
                     jQuery($id_class).addClass('hide');
-                    $tot = jQuery('#cards tbody tr').remove;
-                    $hid = jQuery('#cards tbody tr.hide').remove;
+                    $tot = jQuery('#cards tbody tr').length;
+                    $hid = jQuery('#cards tbody tr.hide').length;
                     if ($tot === $hid) {
                         jQuery('#nocards').removeClass('hide')
                     }

@@ -174,10 +174,6 @@ class WC_Paggi_Gateway extends WC_Payment_Gateway {
                     '12' => '12',
                 ),
             ),
-            'debit_card' => array(
-                'title' => __('Cartão de débito', 'woocommerce-paggi'),
-                'type' => 'checkbox',
-            ),
             'development' => array(
                 'title' => __('Desenvolvimento', 'woocommerce-paggi'),
                 'type' => 'title',

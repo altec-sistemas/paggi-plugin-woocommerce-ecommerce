@@ -364,7 +364,7 @@ class WC_Paggi_Gateway extends WC_Payment_Gateway {
 
         if ('' === $error) {
             // card register
-            if (!isset($_POST['card_id']) && isset($_POST['cc_number'])) {
+            if (!isset($_POST['card_id']) || $_POST['card_id'] == 'new') {
                 $result = $this->api->set_card($_POST['cc_name'], $document, $_POST['cc_number'], $_POST['cc_expiry'], $_POST['cc_cvc']);
                 if (isset($result->id)) {
                     $card_id = $result->id;

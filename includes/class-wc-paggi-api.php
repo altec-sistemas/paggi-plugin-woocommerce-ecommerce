@@ -118,7 +118,7 @@ class WC_Paggi_API {
      * @return array
      */
     public function get_card($document) {
-        $document = strtr($document[0], array(
+        $document = strtr($document, array(
             '-' => '',
             '.' => '',
             '/' => ''

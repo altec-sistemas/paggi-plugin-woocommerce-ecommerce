@@ -44,6 +44,7 @@
         </tr>
     </tbody>
 </table>
+
 <?php if (strlen($current_customer['billing_cpf'][0]) <= 0 && strlen($current_customer['billing_cnpj'][0]) <= 0) { ?>
     <a href="<?php echo get_site_url(null, 'index.php/my-account/edit-address/faturamento/') ?>"> Clique aqui para completar seu cadastro. </a>
 <?php } else { ?>    

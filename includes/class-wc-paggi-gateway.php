@@ -628,38 +628,31 @@ class WC_Paggi_Gateway extends WC_Payment_Gateway {
             wp_register_style('paggicss', PLUGIN_DIR_URL . 'assets/css/paggi.css');
             wp_enqueue_style('paggicss');
         }
-        if (isset($_POST['cc_number'])) {
-            $result = $this->api->set_card($_POST['cc_name'], $_POST['cc_document'], $_POST['cc_number'], $_POST['cc_expiry'], $_POST['cc_cvc']);
-            if (isset($return['errors'])) {
-                wc_add_notice(__('Error: ', 'woocommerce-paggi') . $result['Status']['Description'] . ' - ' . $result['errors'][0]['message'], 'error');
-            }
-        }
-        
+
         $current_customer = get_user_meta(wp_get_current_user()->ID);
 
-
-        if (!isset($current_customer['billing_persontype']) || $current_customer['billing_persontype'][0] === NULL) {
-            $cards = NULL;
-            $columns = array();
-        } else {
-            $person_type = $current_customer['billing_persontype'][0];
-            $cards = NULL;
-
-            if (isset($_POST['cc_document']) && $_POST['cc_document'] !== NULL) {
-                $document = $_POST['cc_document'];
-            } if ($person_type === '1') {
-                $document = $current_customer['billing_cpf'];
+        if (strlen($current_customer['billing_cpf'][0]) > 0 || strlen($current_customer['billing_cnpj'][0]) > 0) {
+            if ($current_customer['billing_persontype'][0] === '1') {
+                $document = $current_customer['billing_cpf'][0];
             } else {
-                $document = $current_customer['billing_cnpj'];
+                $document = $current_customer['billing_cnpj'][0];
+            }
+
+            if (isset($_POST['cc_number'])) {
+                $return = $this->api->set_card($_POST['cc_name'], $document, $_POST['cc_number'], $_POST['cc_expiry'], $_POST['cc_cvc']);
+                if (isset($return->errors)) {
+                    wc_add_notice(__('Error: ', 'woocommerce-paggi') . $return['Status']['Description'] . ' - ' . $return['errors'][0]['message'], 'error');
+                }
             }
 
             $json_response = $this->api->get_card($document);
             $response = json_decode(json_encode($json_response), true);
 
             if (isset($response['code']) && $response['code'] === 404){
-                $cards = NULL;
                 $columns = array();
+                $cards = NULL;
             } else {
+                $cards = NULL;
                 foreach ($response as $key => $value) {
                     $cards[$key]['id'] = $value['id'];
                     $cards[$key]['last4'] = substr($value['masked_number'], -4);                    
@@ -671,9 +664,14 @@ class WC_Paggi_Gateway extends WC_Payment_Gateway {
                     '2' => __('Bandeira', 'woocommerce-paggi'),
                     '3' => __('Excluir?', 'woocommerce-paggi'));
                 }
-            }    
 
+            include dirname(__FILE__) . '/views/html-cards.php';   
         include dirname(__FILE__) . '/views/html-cards.php';
+            include dirname(__FILE__) . '/views/html-cards.php';   
+        } else {
+            $cards = NULL;
+            $columns = array();
+        }
     }
 
     /**

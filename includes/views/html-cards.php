@@ -16,10 +16,19 @@
                 ?>
                 <tr class="woocommerce-orders-table__row order" id="<?php echo $card['id']; ?>">                    
                     <td class="woocommerce-orders-table__cell ">
-                        <?php echo $card['last4'] ?>
+                        *****<?php echo $card['last4'] ?>
                     </td>
                     <td class="woocommerce-orders-table__cell ">
-                        <?php echo $card['brand'] ?>
+                    <?php 
+
+                            if ($card['brand'] !== 'unknown') {
+                                $imagefile = esc_url(plugins_url('paggi-plugin-woocommerce-ecommerce/assets/images/cards/'.$card['brand'].'.svg','paggi-plugin-woocommerce-ecommerce'));
+                                echo "<img style='display: initial' src='".$imagefile."'>";
+
+                            } else {
+                                echo 'unknown (CHANGE)';
+                            }
+                        ?>  
                     </td>
                     <td class="woocommerce-orders-table__cell ">
                         <input type="button" class="woocommerce-Button button" name="remove_card" onclick="delcard('<?php echo $card['id'];?>')"

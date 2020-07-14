@@ -97,8 +97,7 @@
                 numberInput: '#cc_number',
                 expiryInput: '#cc_expiry',
                 cvcInput: '#cc_cvc',
-                nameInput: '#cc_name',
-                documentInput: '#cc_document'
+                nameInput: '#cc_name'
             }
         });
         jQuery('#cc_number').validateCreditCard(function (result) {

@@ -248,9 +248,9 @@ class WC_Paggi_Gateway extends WC_Payment_Gateway {
             $cards = NULL;
 
             if ($person_type === '1'){
-                $document = $current_customer['billing_cpf'];
+                $document = $current_customer['billing_cpf'][0];
             } else {
-                $document = $current_customer['billing_cnpj'];
+                $document = $current_customer['billing_cnpj'][0];
             }
 
             $installments = $this->get_installments_view($cart_total);

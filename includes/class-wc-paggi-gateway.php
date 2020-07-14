@@ -666,8 +666,7 @@ class WC_Paggi_Gateway extends WC_Payment_Gateway {
                 }
 
             include dirname(__FILE__) . '/views/html-cards.php';   
-        include dirname(__FILE__) . '/views/html-cards.php';
-            include dirname(__FILE__) . '/views/html-cards.php';   
+            
         } else {
             $cards = NULL;
             $columns = array();

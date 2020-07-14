@@ -53,9 +53,7 @@
         </tr>
     </tbody>
 </table>
-
-<?php if (strlen($current_customer['billing_cpf'][0]) <= 0 && strlen($current_customer['billing_cnpj'][0]) <= 0) { ?>
-    <a href="<?php echo get_site_url(null, 'my-account/edit-address/faturamento/') ?>"> Clique aqui para completar seu cadastro. </a>
+<?php if (!isset($current_customer['billing_cpf']) || !isset($current_customer['billing_cnpj'])) { ?>
 <?php } else { ?>    
     <input type="button" class="woocommerce-Button button" name="add_card" onclick="addcard()" value=" <?php _e('New Card', 'woocommerce-paggi'); ?>">
     <br/>

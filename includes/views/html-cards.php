@@ -2,14 +2,14 @@
 <div id="error_msg" class="error_msg hide"></div>
 <table class="woocommerce-orders-table woocommerce-MyAccount-orders shop_table shop_table_responsive my_account_orders account-orders-table" id="cards">
     <thead>
-        <tr>
+        <tr style="text-align:center"; >
             <?php foreach ($columns as $column_id => $column_name) : ?>
                 <th class="woocommerce-orders-table__header woocommerce-orders-table__header-<?php echo esc_attr($column_id); ?>"><span class="nobr"><?php echo esc_html($column_name); ?></span></th>
             <?php endforeach; ?>
         </tr>
     </thead>
 
-    <tbody>
+    <tbody style="text-align:center">
         <?php
         if ($cards) {
             foreach ($cards as $card) {

@@ -663,27 +663,6 @@ class WC_Paggi_Gateway extends WC_Payment_Gateway {
                     $return = $this->api->set_card($_POST['cc_name'], $document, $_POST['cc_number'], $_POST['cc_expiry'], $_POST['cc_cvc']);
                     if (isset($return->errors)) {
                         wc_add_notice(__('Error: ', 'woocommerce-paggi') . $return['Status']['Description'] . ' - ' . $return['errors'][0]['message'], 'error');
-                    } else {
-                        $json_response = $this->api->get_card($document);
-                        $response = json_decode(json_encode($json_response), true);
-            
-                        if (isset($response['code']) && $response['code'] === 404){
-                            $columns = array();
-                            $cards = NULL;
-                        } else {
-                            $cards = NULL;
-                            foreach ($response as $key => $value) {
-                                $cards[$key]['id'] = $value['id'];
-                                $cards[$key]['last4'] = substr($value['masked_number'], -4);                    
-                                $cards[$key]['brand'] = $value['brand'];
-                            }
-                
-                            $columns = array(
-                                '1' => __('Final do cartão', 'woocommerce-paggi'),
-                                '2' => __('Bandeira', 'woocommerce-paggi'),
-                                '3' => __('Excluir?', 'woocommerce-paggi')
-                            );
-                        }
                     }
                 }                
             }            

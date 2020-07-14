@@ -675,8 +675,6 @@ class WC_Paggi_Gateway extends WC_Payment_Gateway {
                             foreach ($response as $key => $value) {
                                 $cards[$key]['id'] = $value['id'];
                                 $cards[$key]['last4'] = substr($value['masked_number'], -4);                    
-                    $cards[$key]['last4'] = substr($value['masked_number'], -4);                    
-                                $cards[$key]['last4'] = substr($value['masked_number'], -4);                    
                                 $cards[$key]['brand'] = $value['brand'];
                             }
                 
@@ -688,8 +686,6 @@ class WC_Paggi_Gateway extends WC_Payment_Gateway {
                         }
                     }
                 }                
-            }            
-                }
             }            
         } else {
             $cards = NULL;

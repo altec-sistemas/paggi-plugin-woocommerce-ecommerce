@@ -9,50 +9,45 @@ if (!defined('ABSPATH')) {
 if ($cards) {
     ?>
     <table class="woocommerce-orders-table woocommerce-MyAccount-orders shop_table shop_table_responsive my_account_orders account-orders-table" id="cards">
-        <thead>
-            <tr>
+        <thead style="text-align: center">
+            <tr >
                 <?php foreach ($columns as $column_id => $column_name) : ?>
                     <th class="woocommerce-orders-table__header woocommerce-orders-table__header-<?php echo esc_attr($column_id); ?>"><span class="nobr"><?php echo esc_html($column_name); ?></span></th>
                 <?php endforeach; ?>
             </tr>
         </thead>
 
-        <tbody>
+        <tbody style="text-align: center">
             <?php
             foreach ($cards as $card) {
                 ?>
                 <tr class="woocommerce-orders-table__row order" id="<?php echo $card['id']; ?>">                    
                     <td class="woocommerce-orders-table__cell ">
-                        <?php echo $card['masked_number'] ?>
+                        ***** <?php echo $card['last4'] ?>
                     </td>
                     <td class="woocommerce-orders-table__cell ">
-                        <?php echo $card['holder'] ?>
+                    <?php 
+                        if ($card['brand'] !== 'unknown') {
+                            $imagefile = esc_url(plugins_url('paggi-plugin-woocommerce-ecommerce/assets/images/cards/'.$card['brand'].'.svg','paggi-plugin-woocommerce-ecommerce'));
+                            echo "<img style='display: initial' src='".$imagefile."'>";
+
+                        } else {
+                            echo 'unknown (CHANGE)';
+                        }
+                    ?>  
                     </td>
                     <td class="woocommerce-orders-table__cell ">
-                        <?php echo $card['brand'] ?>
-                    </td>
-                    <td class="woocommerce-orders-table__cell ">
-                        <input name="card_id" type="radio" id="card_id_<?php echo $card['id'] ?>" value="<?php echo $card['id'] ?>">
-                        <label for="card_id_<?php echo $card['id'] ?>"><?php _e('Use this Card', 'woocommerce-paggi'); ?></label>
+                    <input name="card_id" type="radio" id="card_id_<?php echo $card['id'] ?>" value="<?php echo $card['id'] ?>">
+                        <label style="display: initial" for="card_id_<?php echo $card['id'] ?>"><?php _e('Use this Card', 'woocommerce-paggi'); ?></label>
                     </td>
                 </tr>
             <?php } ?>
             <tr class="woocommerce-orders-table__row order" id="">                    
-                <td class="woocommerce-orders-table__cell ">
-
-                </td>
-                <td class="woocommerce-orders-table__cell ">
-
-                </td>
-                <td class="woocommerce-orders-table__cell ">
-
-                </td>
-                <td class="woocommerce-orders-table__cell ">
-                    <input name="card_id" type="radio" id="card_id" value="new">
+                <td colspan="3" class="woocommerce-orders-table__cell ">
+                    <input name="card_id" type="radio" checked id="card_id" value="new">
                     <label for="card_id"><?php _e('New Card', 'woocommerce-paggi'); ?></label>
-
                 </td>
-            </tr>
+           
         </tbody>
     </table>
 <?php }

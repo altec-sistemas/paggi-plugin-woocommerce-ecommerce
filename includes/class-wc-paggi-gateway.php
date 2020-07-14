@@ -631,45 +631,72 @@ class WC_Paggi_Gateway extends WC_Payment_Gateway {
 
         $current_customer = get_user_meta(wp_get_current_user()->ID);
 
-        if (strlen($current_customer['billing_cpf'][0]) > 0 || strlen($current_customer['billing_cnpj'][0]) > 0) {
-            if ($current_customer['billing_persontype'][0] === '1') {
-                $document = $current_customer['billing_cpf'][0];
-            } else {
-                $document = $current_customer['billing_cnpj'][0];
-            }
-
-            if (isset($_POST['cc_number'])) {
-                $return = $this->api->set_card($_POST['cc_name'], $document, $_POST['cc_number'], $_POST['cc_expiry'], $_POST['cc_cvc']);
-                if (isset($return->errors)) {
-                    wc_add_notice(__('Error: ', 'woocommerce-paggi') . $return['Status']['Description'] . ' - ' . $return['errors'][0]['message'], 'error');
-                }
-            }
-
-            $json_response = $this->api->get_card($document);
-            $response = json_decode(json_encode($json_response), true);
-
-            if (isset($response['code']) && $response['code'] === 404){
-                $columns = array();
-                $cards = NULL;
-            } else {
-                $cards = NULL;
-                foreach ($response as $key => $value) {
-                    $cards[$key]['id'] = $value['id'];
-                    $cards[$key]['last4'] = substr($value['masked_number'], -4);                    
-                    $cards[$key]['brand'] = $value['brand'];
+        if (isset($current_customer['billing_cpf']) || isset($current_customer['billing_cnpj'])) {
+            if (strlen($current_customer['billing_cpf'][0]) > 0 || strlen($current_customer['billing_cnpj'][0]) > 0) {
+                if ($current_customer['billing_persontype'][0] === '1') {
+                    $document = $current_customer['billing_cpf'][0];
+                } else {
+                    $document = $current_customer['billing_cnpj'][0];
                 }
     
-                $columns = array(
-                    '1' => __('Final do cartão', 'woocommerce-paggi'),
-                    '2' => __('Bandeira', 'woocommerce-paggi'),
-                    '3' => __('Excluir?', 'woocommerce-paggi'));
+                $json_response = $this->api->get_card($document);
+                $response = json_decode(json_encode($json_response), true);
+    
+                if (isset($response['code']) && $response['code'] === 404){
+                    $columns = array();
+                    $cards = NULL;
+                } else {
+                    $cards = NULL;
+                    foreach ($response as $key => $value) {
+                        $cards[$key]['id'] = $value['id'];
+                        $cards[$key]['last4'] = substr($value['masked_number'], -4);                    
+                        $cards[$key]['brand'] = $value['brand'];
+                    }
+        
+                    $columns = array(
+                        '1' => __('Final do cartão', 'woocommerce-paggi'),
+                        '2' => __('Bandeira', 'woocommerce-paggi'),
+                        '3' => __('Excluir?', 'woocommerce-paggi'));
+                    }
+        
+                if (isset($_POST['cc_number'])) {
+                    $return = $this->api->set_card($_POST['cc_name'], $document, $_POST['cc_number'], $_POST['cc_expiry'], $_POST['cc_cvc']);
+                    if (isset($return->errors)) {
+                        wc_add_notice(__('Error: ', 'woocommerce-paggi') . $return['Status']['Description'] . ' - ' . $return['errors'][0]['message'], 'error');
+                    } else {
+                        $json_response = $this->api->get_card($document);
+                        $response = json_decode(json_encode($json_response), true);
+            
+                        if (isset($response['code']) && $response['code'] === 404){
+                            $columns = array();
+                            $cards = NULL;
+                        } else {
+                            $cards = NULL;
+                            foreach ($response as $key => $value) {
+                                $cards[$key]['id'] = $value['id'];
+                                $cards[$key]['last4'] = substr($value['masked_number'], -4);                    
+                    $cards[$key]['last4'] = substr($value['masked_number'], -4);                    
+                                $cards[$key]['last4'] = substr($value['masked_number'], -4);                    
+                                $cards[$key]['brand'] = $value['brand'];
+                            }
+                
+                            $columns = array(
+                                '1' => __('Final do cartão', 'woocommerce-paggi'),
+                                '2' => __('Bandeira', 'woocommerce-paggi'),
+                                '3' => __('Excluir?', 'woocommerce-paggi')
+                            );
+                        }
+                    }
+                }                
+            }            
                 }
-
-            include dirname(__FILE__) . '/views/html-cards.php';    
+            }            
         } else {
             $cards = NULL;
             $columns = array();
         }
+
+        include dirname(__FILE__) . '/views/html-cards.php';
     }
 
     /**

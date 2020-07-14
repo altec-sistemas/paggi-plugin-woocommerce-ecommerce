@@ -44,36 +44,38 @@
         </tr>
     </tbody>
 </table>
-<input type="button" class="woocommerce-Button button" name="add_card" onclick="addcard()" value=" <?php _e('New Card', 'woocommerce-paggi'); ?>">
-<br/>
-<div class="ccdiv hide" id="ccdiv">
-    <form id="card_register" method="POST">
-        <div class="row">
-            <div class="col-md-6">
-                <div id="card-wrapper"></div><br/>
-                <div class="row" >
-                    <input placeholder="<?php _e('Card number', 'woocommerce-paggi'); ?> " type="tel" name = "cc_number"id="cc_number" class="cc required" size="20" >
+<?php if (strlen($current_customer['billing_cpf'][0]) <= 0 && strlen($current_customer['billing_cnpj'][0]) <= 0) { ?>
+    <a href="<?php echo get_site_url(null, 'index.php/my-account/edit-address/faturamento/') ?>"> Clique aqui para completar seu cadastro. </a>
+<?php } else { ?>    
+    <input type="button" class="woocommerce-Button button" name="add_card" onclick="addcard()" value=" <?php _e('New Card', 'woocommerce-paggi'); ?>">
+    <br/>
+    <div class="ccdiv hide" id="ccdiv">
+        <form id="card_register" method="POST">
+            <div class="row">
+                <div class="col-md-6">
+                    <div id="card-wrapper"></div><br/>
+                    <div class="row" >
+                        <input placeholder="<?php _e('Card number', 'woocommerce-paggi'); ?> " type="tel" name = "cc_number"id="cc_number" class="cc required" size="20" >
+                    </div>
+                    <div class="row">
+                        <input placeholder="<?php _e('Full name', 'woocommerce-paggi'); ?> " type="text" name = "cc_name" id="cc_name" class="cc required" size="20">
+                    </div>
+                    <div class="row">
+                        <input placeholder="<?php _e('MM/YY', 'woocommerce-paggi'); ?> " type="tel" name = "cc_expiry" id="cc_expiry" class="cc required" size="10">
+                    </div>
+                    <div class="row">
+                        <input placeholder="<?php _e('CVC', 'woocommerce-paggi'); ?> " type="tel" name = "cc_cvc" id="cc_cvc" class="cc required" size="10">
+                    </div>
+                    <div class="row">
+                        <input id="card_type" name="card_type" type="hidden">
+                    </div>
                 </div>
-                <div class="row">
-                    <input placeholder="<?php _e('Full name', 'woocommerce-paggi'); ?> " type="text" name = "cc_name" id="cc_name" class="cc required" size="20">
-                </div>
-                <div class="row">
-                    <input placeholder="<?php _e('MM/YY', 'woocommerce-paggi'); ?> " type="tel" name = "cc_expiry" id="cc_expiry" class="cc required" size="10">
-                </div>
-                <div class="row">
-                    <input placeholder="<?php _e('CVC', 'woocommerce-paggi'); ?> " type="tel" name = "cc_cvc" id="cc_cvc" class="cc required" size="10">
-                </div>
-                <div class="row">
-                    <input placeholder="<?php _e('Documento', 'woocommerce-paggi'); ?> " type="tel" name = "cc_document" id="cc_document" class="cc required" size="10">
-                </div>
-                <div class="row">
-                    <input id="card_type" name="card_type" type="hidden">
-                </div>
+                <input type="submit" class="submit" value="<?php _e('Register Card', 'woocommerce-paggi'); ?>" />
             </div>
-            <input type="submit" class="submit" value="<?php _e('Register Card', 'woocommerce-paggi'); ?>" />
-        </div>
-    </form>
-</div>
+        </form>
+    </div>
+   
+<?php } ?> 
 <div class="progressbar">
 </div>
 <script>

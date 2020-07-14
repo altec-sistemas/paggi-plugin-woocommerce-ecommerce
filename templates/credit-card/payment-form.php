@@ -75,7 +75,7 @@ if ($cards) {
     <input name="tot" type="hidden" value="<?php echo $cart_total; ?>">
 </p>
 <div class="clear"></div>
-<p class="form-row form-row-wide">
+<p class="form-row form-row-wide installment">
     <label for="installments"><?php esc_html_e('Parcelamento', 'woocommerce-paggi'); ?> <span class="required">*</span></label>
     <select name="installments" id="paggi-installments" class="cc required">
         <?php
@@ -110,6 +110,17 @@ if ($cards) {
                 }
             });
         }
+
+        $('.payment_method_paggi_gateway input[type=radio][name=card_id]').change(function() {
+            if (this.value == 'new') {
+                $('.payment_method_paggi_gateway #card-wrapper').show();
+                $('.payment_method_paggi_gateway .form-row.form-row-wide:not(.installment)').show();
+            }
+            else {
+                $('.payment_method_paggi_gateway #card-wrapper').hide();
+                $('.payment_method_paggi_gateway .form-row.form-row-wide:not(.installment)').hide();
+            }
+        }); 
 
         jQuery('#cc_number').validateCreditCard(function (result) {
             if (result && result.hasOwnProperty('card_type') && result.card_type && result.card_type.hasOwnProperty('name')) {

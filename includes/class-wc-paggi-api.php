@@ -3,7 +3,7 @@
 /**
  * WooCommerce Paggi API class
  *
- * @version 0.3.3
+ * @version 1.0.0
  */
 if (!defined('ABSPATH')) {
     exit;
@@ -15,11 +15,6 @@ use \Paggi\SDK\Card;
 use \Paggi\SDK\Order;
 
 class WC_Paggi_API {
-
-    /**
-     * API URL.
-     */
-    // const API_URL = 'https://api.stg.paggi.com/v1';
 
     /**
      * Gateway class.
@@ -80,14 +75,13 @@ class WC_Paggi_API {
         return preg_replace('([^0-9])', '', $string);
     }
 
-
      /**
      * create a card to a order
      *
      * @since 0.1.0
      * @param string $holder
-     * @param string $number
      * @param string $document
+     * @param string $number
      * @param string $expire
      * @param string $cvc
      * @return array
@@ -98,7 +92,8 @@ class WC_Paggi_API {
         $year = substr($expire, -4);
         $document = strtr($document, array(
             '-' => '',
-            '.' => ''
+            '.' => '',
+            '/' => ''
             )
         );
         $data = array(
@@ -113,6 +108,49 @@ class WC_Paggi_API {
         $resource = new \Paggi\SDK\Card();
 
         return $resource->create($data);
+    }
+
+    /**
+     * Get all partner cards from a document customer 
+     *
+     * @since 0.1.0
+     * @param string $document
+     * @return array
+     */
+    public function get_card($document) {
+        $document = strtr($document, array(
+            '-' => '',
+            '.' => '',
+            '/' => ''
+            )
+        );
+        
+        $data = array('document' => $document);
+
+        $resource = new \Paggi\SDK\Card();
+                
+        return $resource->find($data);
+    }
+
+    /**
+     *  inactivate a card in Paggi
+     *
+     * @since 0.1.0
+     * @param string $card_id   
+     */
+    public function del_card($card_id) {
+        if ($card_id == "" && isset($_REQUEST['data'])) {
+            $card_id = $_REQUEST['data'];
+        }
+
+        $resource = new \Paggi\SDK\Card();
+        $return = $resource->delete($card_id);
+        
+        if (isset($return->code) && $return->code == 204) {
+            wp_send_json(array('code' => '204', 'message' => __('Card deleted successfuly.', 'woocommerce-paggi')));
+        } else {
+            wp_send_json(array('code' => '500', 'message' => __('An error has occurred. Try Again', 'woocommerce-paggi')));
+        }
     }
 
     /**
@@ -135,20 +173,37 @@ class WC_Paggi_API {
     * @param string $ip
     * @param string $external_identifier
     */
-    public function process_payment($card_id, $installments, $amount, $name, $email, $document, $phone, $street, $neighborhood,
-     $zipcode, $city, $state, $number, $complement, $ip, $external_identifier)
-    {
-        if ($complement !== '' && $neighborhood !== ''){ 
+    public function process_payment($card_id, $installments, $amount, $name, $email, $document, $phone, $street, $neighborhood, $zipcode, $city, $state, $number, $complement, $ip, $external_identifier) {
+        if ($complement === '' && $neighborhood === ''){ 
             $data = array( 
-                'ip' => '127.0.0.1',
-                'external_identifier' => $external_identifier,
-                'charges' => array(
+                'ip' => $ip,
+                'external_identifier' => strval($external_identifier),
+                'charges' => array(array(
                     'installments' => $this->only_numbers($installments),
                     'amount' => $this->only_numbers($amount),
                     'card' => array (
                         'id' => $card_id
                     )
-                ), 
+                )), 
+                'customer' => array(
+                    'name' => $name,
+                    'email' => $email,
+                    'document' => $this->only_numbers($document),
+                    'phone1' => $this->only_numbers($phone),
+                    
+                )
+            );
+        } else {
+            $data = array( 
+                'ip' => $ip,
+                'external_identifier' => strval($external_identifier),
+                'charges' => array(array(
+                    'installments' => $this->only_numbers($installments),
+                    'amount' => $this->only_numbers($amount),
+                    'card' => array (
+                        'id' => $card_id
+                    )
+                )), 
                 'customer' => array(
                     'name' => $name,
                     'email' => $email,
@@ -165,40 +220,12 @@ class WC_Paggi_API {
                     )
                 )
             );
-        } else {
-            $data = array( 
-                'ip' => '127.0.0.1',
-                'external_identifier' => $external_identifier,
-                'charges' => array(
-                    'installments' => $this->only_numbers($installments),
-                    'amount' => $this->only_numbers($amount),
-                    'card' => array (
-                        'id' => $card_id
-                    )
-                ), 
-                'customer' => array(
-                    'name' => $name,
-                    'email' => $email,
-                    'document' => $this->only_numbers($document),
-                    'phone1' => $this->only_numbers($phone)
-                )
-            );
-            }
+        }
 
         $resource = new \Paggi\SDK\Order();
-
-        return $resource->create($data);    
+    
+        return $resource->create($data);
     }
-
-    /**
-     * Get order
-     *
-     * @since 0.1.0
-     * @param string $partner_id
-     * @param string $order_id
-     * @return array
-     */
-
 
     /**
      * Void order
@@ -208,44 +235,8 @@ class WC_Paggi_API {
      * @param string $order_id
      * @return array
      */
-
     public function cancel_regular_payment($transaction_id, $order_id) {
-        if ($transaction_id == "" && isset($_REQUEST['data'])) {
-            $transaction_id = $_REQUEST['data'];
-            $order_id = $_REQUEST['order_id'];
-        }
         $resource = new \Paggi\SDK\Order();
-        return $resource->create($data); 
-        if (isset($return['status']) && $return['status'] == 'cancelled') {
-            $order = new WC_Order($order_id);
-            $order->add_order_note(sprintf(__('Paggi: Transaction was canceled (id = %s.)', 'woocommerce-paggi'), $transaction_id));
-            update_post_meta($order_id, 'paggi_canceled', 'TRUE');
-            wp_send_json(array('code' => '200', 'message' => __('Payment was canceled successfuly.', 'woocommerce-paggi')));
-        } else {
-            wp_send_json(array('code' => '500', 'message' => __('An error has occurred. Try Again', 'woocommerce-paggi')));
-        }
-    }
-
-
-    /**
-     *  inactivate a card in Paggi
-     *
-     * @since 0.1.0
-     * @param string $card_id     *
-     * @param string $partner_id     *
-     */
-    public function del_card($card_id, $partner_id) {
-        if ($card_id == "" && isset($_REQUEST['data'])) {
-            $card_id = $_REQUEST['data'];
-        }
-        $data = null;
-        $action = 'partners/'.$partner_id.'cards/' . $card_id;
-        $method = 'DELETE';
-        $return = $this->ws_comunicate($action, $method, $data);
-        if (isset($return['Status']['Code']) && $return['Status']['Code'] == '200') {
-            wp_send_json(array('code' => '200', 'message' => __('Card deleted successfuly.', 'woocommerce-paggi')));
-        } else {
-            wp_send_json(array('code' => '500', 'message' => __('An error has occurred. Try Again', 'woocommerce-paggi')));
-        }
+        return $resource->cancel($transaction_id);    
     }
 }

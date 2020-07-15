@@ -3,7 +3,7 @@
 /**
  * WooCommerce Gateway Paggi class
  *
- * @version 0.3.3
+ * @version 1.0.0
  */
 class WC_Paggi_Gateway extends WC_Payment_Gateway {
 
@@ -15,17 +15,18 @@ class WC_Paggi_Gateway extends WC_Payment_Gateway {
     public function __construct() {
 
         $this->id = 'paggi_gateway';
-        //$this->icon = apply_filters('woocommerce_paggi_icon', plugins_url('assets/images/paggi.png', plugin_dir_path(__FILE__)));
         $this->has_fields = false;
         $this->method_title = __('Paggi', 'woocommerce-paggi');
         $this->method_description = __('Accept payments by credit card using the Paggi.', 'woocommerce-paggi');//
         $this->order_button_text = __('Proceed to payment', 'woocommerce-paggi');
+        $this->supports[] = 'refunds';
 
         // Load the settings.
         $this->init_form_fields();
         $this->init_settings();
 
         // Define user set variables
+        $this->partner_id = $this->get_option('partner_id');
         $this->title = $this->get_option('paggi_title', 'Paggi');
         $this->description = $this->get_option('paggi_description');
         $this->instructions = $this->get_option('paggi_instructions', $this->description);
@@ -67,32 +68,36 @@ class WC_Paggi_Gateway extends WC_Payment_Gateway {
 
         $this->form_fields = apply_filters('wc_paggi_form_fields', array(
             'general' => array(
-                'title' => __('General', 'woocommerce-paggi'),
+                'title' => __('Configurações Gerais', 'woocommerce-paggi'),
                 'type' => 'title',
                 'description' => '',
             ),
+            'partner_id' => array(
+                'title' => __('ID PAGGI', 'woocommerce-paggi'),
+                'type' => 'text',
+                'description' => ('Id de identificação PAGGI'),
+            ),
             'enabled' => array(
-                'title' => __('Enable/Disable', 'woocommerce-paggi'),
+                'title' => __('Habilitar / Desabilitar', 'woocommerce-paggi'),
                 'type' => 'checkbox',
-                'label' => __('Enable Paggi Payment', 'woocommerce-paggi'),
-                'default' => 'yes'
+                'label' => __('Pagamento Paggi', 'woocommerce-paggi'),
+                'default' => 'yes',
             ),
             'paggi_title' => array(
-                'title' => __('Title', 'woocommerce-paggi'),
+                'title' => __('Título', 'woocommerce-paggi'),
                 'type' => 'text',
                 'description' => __('This controls the title for the payment method the customer sees during checkout.', 'woocommerce-paggi'),
-                'default' => __('Paggi Payment', 'woocommerce-paggi'),
+                'default' => __('Pagamento Paggi', 'woocommerce-paggi'),
                 'desc_tip' => true,
             ),
             'paggi_description' => array(
-                'title' => __('Description', 'woocommerce-paggi'),
+                'title' => __('Descrição', 'woocommerce-paggi'),
                 'type' => 'textarea',
                 'description' => __('Payment method description that the customer will see on your checkout.', 'woocommerce-paggi'),
-                'default' => __('Please remit payment to Store Name upon pickup or delivery.', 'woocommerce-paggi'),
                 'desc_tip' => true,
             ),
             'paggi_instructions' => array(
-                'title' => __('Instructions', 'woocommerce-paggi'),
+                'title' => __('Instruções', 'woocommerce-paggi'),
                 'type' => 'textarea',
                 'description' => __('Instructions that will be added to the thank you page and emails.', 'woocommerce-paggi'),
                 'default' => '',
@@ -101,20 +106,20 @@ class WC_Paggi_Gateway extends WC_Payment_Gateway {
             'paggi_token' => array(
                 'title' => __('Token', 'woocommerce-paggi'),
                 'type' => 'text',
-                'description' => __('Please enter your Paggi token. This is needed to process the payment.', 'woocommerce-paggi'),
+                'description' => __('Insira o token da Paggi para processar pagamentos.', 'woocommerce-paggi'),
                 'default' => '',
             ),
             'installments' => array(
-                'title' => __('Installments', 'woocommerce-paggi'),
+                'title' => __('Configuração de Parcelamentos', 'woocommerce-paggi'),
                 'type' => 'title',
                 'description' => '',
             ),
             'max_installment' => array(
-                'title' => __('Number of Installment', 'woocommerce-paggi'),
+                'title' => __('Número de parcelas', 'woocommerce-paggi'),
                 'type' => 'select',
                 'class' => 'wc-enhanced-select',
                 'default' => '12',
-                'description' => __('Maximum number of installments possible with payments by credit card.', 'woocommerce-paggi'),
+                'description' => __('Número máximo de parcelas possível com pagamento por cartão de crédito.', 'woocommerce-paggi'),
                 'desc_tip' => true,
                 'options' => array(
                     '1' => '1',
@@ -132,25 +137,25 @@ class WC_Paggi_Gateway extends WC_Payment_Gateway {
                 ),
             ),
             'smallest_installment' => array(
-                'title' => __('Smallest Installment', 'woocommerce-paggi'),
+                'title' => __('Valor mínimo de parcela', 'woocommerce-paggi'),
                 'type' => 'text',
-                'description' => __('Please enter with the value of smallest installment.', 'woocommerce-paggi'),
+                'description' => __('Informe qual o valor mínimo aceito para parcela.', 'woocommerce-paggi'),
                 'desc_tip' => true,
                 'default' => '5',
             ),
             'interest_rate' => array(
-                'title' => __('Interest rate', 'woocommerce-paggi'),
+                'title' => __('Taxa de juros', 'woocommerce-paggi'),
                 'type' => 'text',
-                'description' => __('Please enter with the interest rate amount. Note: use 0 to not charge interest.', 'woocommerce-paggi'),
+                'description' => __('Valor da taxa de juros. Use 0 para parcelamento sem taxa de juros.', 'woocommerce-paggi'),
                 'desc_tip' => true,
                 'default' => '0',
             ),
             'free_installments' => array(
-                'title' => __('Free Installments', 'woocommerce-paggi'),
+                'title' => __('Parcelamento sem juros', 'woocommerce-paggi'),
                 'type' => 'select',
                 'class' => 'wc-enhanced-select',
                 'default' => '1',
-                'description' => __('Number of installments with interest free.', 'woocommerce-paggi'),
+                'description' => __('Número de parcelas sem juros.', 'woocommerce-paggi'),
                 'desc_tip' => true,
                 'options' => array(
                     '0' => _x('None', 'no free installments', 'woocommerce-paggi'),
@@ -169,14 +174,14 @@ class WC_Paggi_Gateway extends WC_Payment_Gateway {
                 ),
             ),
             'development' => array(
-                'title' => __('Development', 'woocommerce-paggi'),
+                'title' => __('Ambiente de Desenvolvimento', 'woocommerce-paggi'),
                 'type' => 'title',
                 'description' => '',
             ),
             'paggi_sandbox' => array(
-                'title' => __('Sandbox', 'woocommerce-paggi'),
+                'title' => __('Ambiente de Teste Paggi', 'woocommerce-paggi'),
                 'type' => 'checkbox',
-                'label' => __('Enable Paggi Sandbox', 'woocommerce-paggi'),
+                'label' => __('Habilitar ambiente de teste Paggi', 'woocommerce-paggi'),
                 'desc_tip' => true,
                 'default' => 'no',
                 'description' => __('Paggi Sandbox can be used to test the payments.', 'woocommerce-paggi'),
@@ -184,7 +189,7 @@ class WC_Paggi_Gateway extends WC_Payment_Gateway {
             'paggi_debug' => array(
                 'title' => __('Debug Log', 'woocommerce-paggi'),
                 'type' => 'checkbox',
-                'label' => __('Enable logging', 'woocommerce-paggi'),
+                'label' => __('Habilitar logs', 'woocommerce-paggi'),
                 'default' => 'no',
                 'description' => sprintf(__('Log Paggi events, such as API requests, inside %s', 'woocommerce-paggi'), $this->get_log_view()),
             )
@@ -218,34 +223,63 @@ class WC_Paggi_Gateway extends WC_Payment_Gateway {
             wp_register_style('paggicss', PLUGIN_DIR_URL . 'assets/css/paggi.css');
             wp_enqueue_style('paggicss');
         }
-        $paggi_customer_id = wp_get_current_user()->paggi_id;
-        $cards = NULL;
-        if ($paggi_customer_id) {
-            $customer = $this->api->list_customer($paggi_customer_id);
-            foreach ($customer['cards'] as $key => $value) {
-                $cards[$key]['id'] = $value['id'];
-                $cards[$key]['name'] = $value['name'];
-                $cards[$key]['expires'] = $value['month'] . "/" . $value['year'];
-                $cards[$key]['brand'] = $value['brand'];
-                $cards[$key]['last4'] = $value['last4'];
+        $current_customer = get_user_meta(wp_get_current_user()->ID);
+        if (!isset($current_customer['billing_persontype']) || $current_customer['billing_persontype'][0] === NULL) {
+            $cards = NULL;
+            $installments = $this->get_installments_view($cart_total);
+    
+            wc_get_template('credit-card/payment-form.php', array(
+                'cart_total' => $cart_total,
+                'cards' => $cards,
+                'columns' => array(
+                    '1' => __('Last Digits', 'woocommerce-paggi'),
+                    '2' => __('Brand', 'woocommerce-paggi'),
+                    '3' => __('Action', 'woocommerce-paggi')
+                ),
+                'installments' => $installments,
+                    ), 'woocommerce/paggi/', WC_Paggi::get_templates_path());
+        } else {
+            $person_type = $current_customer['billing_persontype'][0];
+            $cards = NULL;
+
+            if ($person_type === '1'){
+                $document = $current_customer['billing_cpf'][0];
+            } else {
+                $document = $current_customer['billing_cnpj'][0];
             }
-        }
 
-        $installments = $this->get_installments_view($cart_total);
-        //print_r(array_values ($installments));
+            $installments = $this->get_installments_view($cart_total);
+            $json_response = $this->api->get_card($document);
+            $response = json_decode(json_encode($json_response), true);
 
-        wc_get_template('credit-card/payment-form.php', array(
-            'cart_total' => $cart_total,
-            'cards' => $cards,
-            'columns' => array(
-                '1' => __('Name', 'woocommerce-paggi'),
-                '2' => __('Expires', 'woocommerce-paggi'),
-                '3' => __('Brand', 'woocommerce-paggi'),
-                '4' => __('Last four', 'woocommerce-paggi'),
-                '5' => __('Action', 'woocommerce-paggi')
-            ),
-            'installments' => $installments,
-                ), 'woocommerce/paggi/', WC_Paggi::get_templates_path());
+            if (isset($response['code']) && $response['code'] === 404){
+                $cards = NULL;
+                $columns = array();
+            } else {
+                foreach ($response as $key => $value) {
+                    $cards[$key]['id'] = $value['id'];
+                    $cards[$key]['last4'] = substr($value['masked_number'], -4);
+                    $cards[$key]['brand'] = $value['brand'];
+                }
+    
+                $columns = array(
+                    '1' => __('Last Digits', 'woocommerce-paggi'),
+                    '2' => __('Brand', 'woocommerce-paggi'),
+                    '3' => __('Action', 'woocommerce-paggi'));
+                }        
+            
+    
+            wc_get_template('credit-card/payment-form.php', array(
+                'cart_total' => $cart_total,
+                'cards' => $cards,
+                'columns' => array(
+                    '1' => __('Cartão', 'woocommerce-paggi'),
+                    '2' => __('Bandeira', 'woocommerce-paggi'),
+                    '3' => __('Ação', 'woocommerce-paggi')
+                ),
+                'installments' => $installments,
+                    ), 'woocommerce/paggi/', WC_Paggi::get_templates_path());
+        }    
     }
 
     /**
@@ -272,12 +306,12 @@ class WC_Paggi_Gateway extends WC_Payment_Gateway {
 
     public function get_installments_view($cart_total)
     {
+
         $return = array('1' => $cart_total);
         $installments = $cart_total / $this->smallest_installment;
         if ($installments > $this->max_installment) {
             $installments = $this->max_installment;
         }
-        //$this->log->add($this->id, "$installments max $this->max_installment");
         for ($i = 2; $i <= $installments; $i++) {
             if ($i <= $this->free_installments) {
                 $return[$i] = number_format((float) $cart_total / $i, 2, '.', '');//$i
@@ -296,102 +330,83 @@ class WC_Paggi_Gateway extends WC_Payment_Gateway {
      * @return array
      */
     public function process_payment($order_id) {
+        $error = '';
+        $order = new WC_Order($order_id);
 
-        if (isset($_POST['payment_method']) && "paggi_gateway" === $_POST['payment_method']) {
-            $error = '';
-            $paggi_customer_id = wp_get_current_user()->paggi_id;
-            if (!$paggi_customer_id) {
-                $order = new WC_Order($order_id);
-                $paggi_customer_id = $order->get_meta('paggi_customer_id');
-            }
-            // not registered - guest
-            if (!$paggi_customer_id) {
+        if ('' === $error) {
+            if ($order->get_meta('_billing_persontype') == 1) {
+                $document = $order->get_meta('_billing_cpf');
                 $name = $order->get_billing_first_name() . ' ' . $order->get_billing_last_name();
-                $email = $order->get_billing_email();
-                if (strlen($order->get_meta('_billing_cpf')) == 14) {
-                    $document = $order->get_meta('_billing_cpf');
-                } else {
-                    $document = $order->get_meta('_billing_cnpj');
-                }
-                $phone = $order->get_billing_phone();
-                $street = $order->get_billing_address_1() . ' ' . $order->get_billing_address_2() . ' ' . $order->get_meta('_billing_number');
-                $district = $order->get_meta('_billing_neighborhood');
-                $city = $order->get_billing_city();
-                $state = $order->get_billing_state();
-                $zip = $order->get_billing_postcode();
-
-                $result = $this->api->set_customer($name, $email, $document, $phone, $street, $district, $city, $state, $zip);
-
-                if (isset($result['id'])) {
-                    $paggi_customer_id = $result['id'];
-                    update_post_meta($order_id, 'paggi_customer_id', $paggi_customer_id);
-                } else {
-                    if (isset($result['error'])) {
-                        $error .= '<b>' . $result['error'][0]['param'] . "</b> " . $result['error'][0]['message'] . '<br/>';
-                    } else {
-                        $error .= $result['errors'][0]['message'] . '<br/>';
-                    }
-                }
-            }
-            if ('' === $error) {
-                // card register
-                if (isset($paggi_customer_id) && !isset($_POST['card_id']) && isset($_POST['cc_number'])) {
-                    $result = $this->api->set_card($paggi_customer_id, $_POST['cc_name'], $_POST['cc_number'], $_POST['cc_expiry'], $_POST['cc_cvc']);
-                    if (isset($result['id'])) {
-                        $card_id = $result['id'];
-                    } else {
-                        if (isset($result['error'])) {
-                            $error .= '<b>' . $result['error'][0]['param'] . "</b> " . $result['error'][0]['message'] . '<br/>';
-                        } else {
-                            $error .= $result['errors'][0]['message'] . '<br/>';
-                        }
-                    }
-                } else {
-                    $card_id = $_POST['card_id'];
-                }
-            }
-            if ('' === $error) {
-                // payment process
-                $value = $_POST['tot'];
-                if ($_POST['installments'] != '1') {
-                    $value = $this->get_installments($value, $_POST['installments']);
-                }
-                $result = $this->api->process_regular_payment($value, $paggi_customer_id, $card_id, $_POST['installments']);
-                if ('yes' === $this->debug) {
-
-                    $this->log->add($this->id, "Amount: ".$value."; Customer_id: ".$paggi_customer_id."; Card id :".$card_id."; Installments: ".$_POST['installments']);
-                }
-                if (isset($result['id'])) {
-                    $transaction_id = $result['id'];
-
-                    $order = wc_get_order($order_id);
-
-                    $this->process_order_status($order, $result['status'], $transaction_id);
-
-                    // Reduce stock levels
-                    $order->reduce_order_stock();
-
-                    // Remove cart
-                    WC()->cart->empty_cart();
-                } else {
-                    if (isset($result['error'])) {
-                        $error .= '<b>' . $result['error'][0]['param'] . "</b> " . $result['error'][0]['message'] . '<br/>';
-                    } else {
-                        $error .= $result['errors'][0]['message'] . '<br/>';
-                    }
-                }
-            }
-
-            if ('' === $error) {
-                // Return thankyou redirect
-                return array(
-                    'result' => 'success',
-                    'redirect' => $this->get_return_url($order)
-                );
             } else {
-                wc_add_notice(__('Payment error: ', 'woocommerce-paggi') . ucwords($error), 'error');
-                return;
+                $document = $order->get_meta('_billing_cnpj');
+                $name = $order->get_billing_company();
             }
+            $external_identifier = $order->get_id();
+            $ip = $order->get_customer_ip_address();
+            $document = strtr($document, array('-' => '','.' => '', '/' => ''));
+            $email = $order->get_billing_email();
+            $phone = $order->get_billing_phone();
+            $street = $order->get_billing_address_1();
+            $neighborhood = $order->get_meta('_billing_neighborhood');
+            $city = $order->get_billing_city();
+            $state = $order->get_billing_state();
+            $zipcode = $order->get_billing_postcode();
+            $number = $order->get_meta('_billing_number');
+            $complement = $order->get_billing_address_2();
+            // payment process
+            $amount = $_POST['tot'];
+            $installments = $_POST['installments'];
+
+
+        if ('' === $error) {
+            // card register
+            if (!isset($_POST['card_id']) || $_POST['card_id'] == 'new') {
+                $result = $this->api->set_card($_POST['cc_name'], $document, $_POST['cc_number'], $_POST['cc_expiry'], $_POST['cc_cvc']);
+                if (isset($result->id)) {
+                    $card_id = $result->id;
+                } else {
+                    if (isset($result['error'])) {
+                        $error .= '<b>' . $result['error'][0]['param'] . "</b> " . $result['error'][0]['message'] . '<br/>';
+                    } else {
+                        $error .= $result['errors'][0]['message'] . '<br/>';
+                    }
+                }
+            } else {
+                $card_id = $_POST['card_id'];
+            }
+        }
+           
+        $result = $this->api->process_payment($card_id, $installments, $amount, $name, $email, $document, $phone, $street, $neighborhood, $zipcode, $city, $state, $number, $complement, $ip, $external_identifier);
+
+        if (isset($result->id)) {
+            $transaction_id = $result->id;
+
+            $order = wc_get_order($order_id);
+
+            $this->process_order_status($order, $result->status, $transaction_id);
+
+            // Reduce stock levels
+            $order->reduce_order_stock();
+
+            // Remove cart
+            WC()->cart->empty_cart();
+        } else {
+            if (isset($result['error'])) {
+                $error .= '<b>' . $result['error'][0]['param'] . "</b> " . $result['error'][0]['message'] . '<br/>';
+            } else {
+                $error .= $result['errors'][0]['message'] . '<br/>';
+                }
+            }
+        }
+
+        if ('' === $error) {
+            // Return thankyou redirect
+            return array(
+                'result' => 'success',
+                'redirect' => $this->get_return_url($order));
+        } else {
+            wc_add_notice(__('Payment error: ', 'woocommerce-paggi') . ucwords($error), 'error');
+            return;
         }
     }
 
@@ -401,43 +416,34 @@ class WC_Paggi_Gateway extends WC_Payment_Gateway {
      * @since 0.1.0
      * @param WC_Order $order
      * @param string $status
-     * @param string $transaction_id
+     * @param string $transaction_id 
      */
     public function process_order_status($order, $status, $transaction_id) {
-        if ('yes' === $this->debug) {
-            $this->log->add($this->id, 'Payment status for order ' . $order->get_order_number() . ' is now: ' . $status);
-        }
         update_post_meta($order->id, 'paggi_transaction_id', $transaction_id);
         switch ($status) {
-            case 'approved' :
+            case 'captured' :
                 if (!in_array($order->get_status(), array('processing', 'completed'), true)) {
-                    $order->update_status('processing', sprintf(__('Paggi: The transaction was authorized(id = %s.)', 'woocommerce-paggi'), $transaction_id));
+                    $order->update_status('completed', sprintf(__('Paggi: The transaction was authorized(id = %s.)', 'woocommerce-paggi'), $transaction_id));
                 }
                 // Changing the order for processing and reduces the stock.
                 $order->payment_complete();
                 break;
-            case 'cleared' :
+            case 'capture_pending' :
                 $order->update_status('on-hold', sprintf(__('Paggi: The transaction is being processed(id = %s.)', 'woocommerce-paggi'), $transaction_id));
                 break;
-            case 'registered' :
-                $order->update_status('on-hold', sprintf(__('Paggi: The banking ticket was issued but not paid yet(id = %s.)', 'woocommerce-paggi'), $transaction_id));
-                break;
-            case 'not_cleared' :
-            case 'declined' :
+            case 'capture_declined' :
                 $order->update_status('failed', sprintf(__('Paggi: The transaction was rejected by the card company or by fraud(id = %s.)', 'woocommerce-paggi'), $transaction_id));
-
 
                 $transaction_id = get_post_meta($order->id, '_wc_paggi_transaction_id', true);
                 $this->send_email(
                         sprintf(esc_html__('The transaction for order %s was rejected by the card company or by fraud', 'woocommerce-paggi'), $order->get_order_number()), esc_html__('Transaction failed', 'woocommerce-paggi'), sprintf(esc_html__('Order %1$s has been marked as failed, because the transaction was rejected by the card company or by fraud. ID %2$s.', 'woocommerce-paggi'), $order->get_order_number(), $transaction_id)
                 );
-
                 break;
             case 'cancelled' :
-            case 'chargeback' :
+            case 'chargeback':
                 $order->update_status('refunded', sprintf(__('Paggi: The transaction was refunded/canceled (id = %s.)', 'woocommerce-paggi'), $transaction_id));
 
-                $transaction_id = get_post_meta($order->id, '_wc_paggi_transaction_id', true);
+                $transaction_id = get_post_meta($order->id, 'paggi_transaction_id', true);
 
                 $this->send_email(
                         sprintf(esc_html__('The transaction for order %s refunded', 'woocommerce-paggi'), $order->get_order_number()), esc_html__('Transaction refunded', 'woocommerce-paggi'), sprintf(esc_html__('Order %1$s has been marked as refunded by Paggi. ID %2$s', 'woocommerce-paggi'), $order->get_order_number(), $transaction_id)
@@ -445,6 +451,21 @@ class WC_Paggi_Gateway extends WC_Payment_Gateway {
                 break;
             default :
                 break;
+        }
+    }
+
+    public function process_refund($order_id, $amount = null, $reason = '') {      
+        $order = wc_get_order($order_id);
+        $transaction_id = get_post_meta($order->id, 'paggi_transaction_id', true);
+        $result =  $this->api->cancel_regular_payment($transaction_id, $order_id);
+        if (isset($result->status) && $result->status == 'cancelled') {
+            $order->update_status('refunded', sprintf(__('Paggi: The transaction was refunded/canceled (id = %s.)', 'woocommerce-paggi'), $transaction_id));            
+            $order->add_order_note(sprintf(__('Paggi: Transaction was canceled (id = %s.)', 'woocommerce-paggi'), $transaction_id));
+            update_post_meta($order_id, 'paggi_canceled', 'TRUE');
+            //$this->process_refund($order_id);
+            wp_send_json(array('code' => '200', 'message' => __('Payment was canceled successfuly.', 'woocommerce-paggi')));
+        } else {
+            wp_send_json(array('code' => '500', 'message' => __('An error has occurred. Try Again', 'woocommerce-paggi')));
         }
     }
 
@@ -478,7 +499,7 @@ class WC_Paggi_Gateway extends WC_Payment_Gateway {
      * @return string
      */
     public function get_token() {
-        return 'yes' === $this->sandbox ? 'B31DCE74-E768-43ED-86DA-85501612548F' : $this->token;
+        return 'yes' === $this->sandbox ? 'eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJQQUdHSSIsImV4cCI6NjIwNjAzMzA3ODYsImlhdCI6MTU4MDMzMDc4NiwiaXNzIjoiUEFHR0kiLCJqdGkiOiI0NDk1NTU2OS00YTY3LTRmYmItODdlZC04NzUwMmIxNjQ4MDAiLCJuYmYiOjE1ODAzMzA3ODUsInBlcm1pc3Npb25zIjpbeyJwYXJ0bmVyX2lkIjoiMjdhODJjZTEtMmJlMi00NjRhLWJmM2YtOGQyZTE5NjVkMzQwIiwicGVybWlzc2lvbnMiOlsic3lzdGVtX3VzZXIiXX1dLCJzdWIiOiI3MWEzZmM1Ny0yOTBiLTQzNDYtYTgwOC0yOTVkZjM3NmE2NmEiLCJ0eXAiOiJhY2Nlc3MifQ.ZTVGFSsfQaFWnIgXgKmdtY1YUPOInyYBCYf3Ft218VnzFpnYGdnt5MSINq7RtqOlLYy_MIBuIkfZcOSEE4jwhA' : $this->token;
     }
 
     /**
@@ -491,7 +512,6 @@ class WC_Paggi_Gateway extends WC_Payment_Gateway {
         if (defined('WC_VERSION') && version_compare(WC_VERSION, '2.2', '>=')) {
             return '<a href="' . esc_url(admin_url('admin.php?page=wc-status&tab=logs&log_file=' . esc_attr($this->id) . '-' . sanitize_file_name(wp_hash($this->id)) . '.log')) . '">' . __('System Status &gt; Logs', 'woocommerce-paggi') . '</a>';
         }
-
         return '<code>woocommerce/logs/' . esc_attr($this->id) . '-' . sanitize_file_name(wp_hash($this->id)) . '.txt</code>';
     }
 
@@ -516,24 +536,11 @@ class WC_Paggi_Gateway extends WC_Payment_Gateway {
         $district = $user_info->billing_neighborhood;
         $city = $user_info->billing_city;
         $state = $user_info->billing_state;
-        $zip = $user_info->billing_postcode;
+        $zipcode = $user_info->billing_postcode;
         $paggi_customer_id = $user_info->paggi_id;
         // setting up user display name
         wp_update_user(array('ID' => $user_id, 'display_name' => $name));
-        if (!$paggi_customer_id) {
-            $result = $this->api->set_customer($name, $email, $document, $phone, $street, $district, $city, $state, $zip);
-        } else {
-            $result = $this->api->update_customer($paggi_customer_id, $name, $email, $document, $phone, $street, $district, $city, $state, $zip);
-        }
-        switch ($result['Status']['Code']) {
-            case '200':
-                add_user_meta($user_id, 'paggi_id', $result['id'], true);
-                return $result['id'];
-                break;
-            default:
-                include dirname(__FILE__) . '/views/html-receipt-page-error.php';
-                break;
-        }
+        
     }
 
     /**
@@ -542,14 +549,12 @@ class WC_Paggi_Gateway extends WC_Payment_Gateway {
      * @since 0.1.0
      */
     public function init() {
-        add_action('woocommerce_update_options_payment_gateways_' . $this->id, array($this, 'process_admin_options'))
-
-        ;
-// update customers informations
+        add_action('woocommerce_update_options_payment_gateways_' . $this->id, array($this, 'process_admin_options'));
+        // update customers informations
         add_action('woocommerce_save_account_details', array($this, 'save_account_form'));
         add_action('woocommerce_customer_save_address', array($this, 'save_account_form'));
 
-// add menu in myaccount
+        // add menu in myaccount
         add_filter('woocommerce_account_menu_items'
                 , array($this, 'paggicards_account_menu_items'), 10, 1);
 
@@ -559,9 +564,7 @@ class WC_Paggi_Gateway extends WC_Payment_Gateway {
         add_action('woocommerce_account_paggicards_endpoint', array($this, 'paggicards_endpoint_content'));
 
         // add cancel transaction in order page
-        add_action('add_meta_boxes', array($this, 'add_meta_boxes'))
-
-        ;
+        add_action('add_meta_boxes', array($this, 'add_meta_boxes'));
     }
 
     /**
@@ -577,7 +580,7 @@ class WC_Paggi_Gateway extends WC_Payment_Gateway {
         $is_endpoint = isset($wp_query->query_vars[
                 'paggicards']);
         if ($is_endpoint && !is_admin() && is_main_query() && in_the_loop() && is_account_page()) {
-// New page title.
+        // New page title.
             $title = __('Paggi Cards', 'woocommerce-paggi');
             remove_filter('the_title', array($this, 'endpoint_title'));
         }
@@ -621,36 +624,49 @@ class WC_Paggi_Gateway extends WC_Payment_Gateway {
             wp_register_style('paggicss', PLUGIN_DIR_URL . 'assets/css/paggi.css');
             wp_enqueue_style('paggicss');
         }
-        $paggi_customer_id = wp_get_current_user()->paggi_id;
-        if (!$paggi_customer_id) {
-            $paggi_customer_id = $this->save_account_form(wp_get_current_user()->ID);
-        }
-        if (isset($_POST['cc_number'])) {
-            $return = $this->api->set_card($paggi_customer_id, $_POST['cc_name'], $_POST['cc_number'], $_POST['cc_expiry'], $_POST['cc_cvc']);
-            if (isset($return['errors'])) {
-                wc_add_notice(__('Error: ', 'woocommerce-paggi') . $result['Status']['Description'] . ' - ' . $result['errors'][0]['message'], 'error');
-            }
-        }
-        if (isset($paggi_customer_id)) {
-            $customer = $this->api->list_customer($paggi_customer_id);
-            $cards = NULL;
-            foreach ($customer['cards'] as $key => $value) {
-                $cards[$key]['id'] = $value['id'];
-                $cards[$key]['name'] = $value['name'];
-                $cards[$key]['expires'] = $value['month'] . "/" . $value['year'];
-                $cards[$key]['brand'] = $value['brand'];
-                $cards[$key]['last4'] = $value['last4'];
-            }
+
+        $current_customer = get_user_meta(wp_get_current_user()->ID);
+
+        if (isset($current_customer['billing_cpf']) || isset($current_customer['billing_cnpj'])) {
+            if (strlen($current_customer['billing_cpf'][0]) > 0 || strlen($current_customer['billing_cnpj'][0]) > 0) {
+                if ($current_customer['billing_persontype'][0] === '1') {
+                    $document = $current_customer['billing_cpf'][0];
+                } else {
+                    $document = $current_customer['billing_cnpj'][0];
+                }
+    
+                $json_response = $this->api->get_card($document);
+                $response = json_decode(json_encode($json_response), true);
+    
+                if (isset($response['code']) && $response['code'] === 404){
+                    $columns = array();
+                    $cards = NULL;
+                } else {
+                    $cards = NULL;
+                    foreach ($response as $key => $value) {
+                        $cards[$key]['id'] = $value['id'];
+                        $cards[$key]['last4'] = substr($value['masked_number'], -4);                    
+                        $cards[$key]['brand'] = $value['brand'];
+                    }
+        
+                    $columns = array(
+                        '1' => __('Final do cartão', 'woocommerce-paggi'),
+                        '2' => __('Bandeira', 'woocommerce-paggi'),
+                        '3' => __('Excluir?', 'woocommerce-paggi'));
+                    }
+        
+                if (isset($_POST['cc_number'])) {
+                    $return = $this->api->set_card($_POST['cc_name'], $document, $_POST['cc_number'], $_POST['cc_expiry'], $_POST['cc_cvc']);
+                    if (isset($return->errors)) {
+                        wc_add_notice(__('Error: ', 'woocommerce-paggi') . $return['Status']['Description'] . ' - ' . $return['errors'][0]['message'], 'error');
+                    }
+                }                
+            }            
         } else {
             $cards = NULL;
+            $columns = array();
         }
-        $columns = array(
-            '1' => __('Name', 'woocommerce-paggi'),
-            '2' => __('Expires', 'woocommerce-paggi'),
-            '3' => __('Brand', 'woocommerce-paggi'),
-            '4' => __('Last four', 'woocommerce-paggi'),
-            '5' => __('Action', 'woocommerce-paggi')
-        );
+
         include dirname(__FILE__) . '/views/html-cards.php';
     }
 
@@ -661,8 +677,7 @@ class WC_Paggi_Gateway extends WC_Payment_Gateway {
      */
     function add_meta_boxes() {
         add_meta_box(
-                'woocommerce-meta-paggicards', __('Paggi Cards', 'woocommerce-paggi'), array($this, 'meta_paggicards'), 'shop_order', 'side', 'default'
-        );
+                'woocommerce-meta-paggicards', __('Paggi Cards', 'woocommerce-paggi'), array($this, 'meta_paggicards'), 'shop_order', 'side', 'default');
     }
 
     /**
@@ -684,7 +699,6 @@ class WC_Paggi_Gateway extends WC_Payment_Gateway {
         $order = new WC_Order($order_id->ID);
         if (!$order->get_meta('paggi_canceled'))
             $id = $order->get_meta('paggi_transaction_id');
-        include dirname(__FILE__) . '/admin/meta.php';
     }
 
 }

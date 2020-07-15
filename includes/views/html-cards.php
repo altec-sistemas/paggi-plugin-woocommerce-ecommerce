@@ -2,33 +2,36 @@
 <div id="error_msg" class="error_msg hide"></div>
 <table class="woocommerce-orders-table woocommerce-MyAccount-orders shop_table shop_table_responsive my_account_orders account-orders-table" id="cards">
     <thead>
-        <tr>
+        <tr style="text-align:center"; >
             <?php foreach ($columns as $column_id => $column_name) : ?>
                 <th class="woocommerce-orders-table__header woocommerce-orders-table__header-<?php echo esc_attr($column_id); ?>"><span class="nobr"><?php echo esc_html($column_name); ?></span></th>
             <?php endforeach; ?>
         </tr>
     </thead>
 
-    <tbody>
+    <tbody style="text-align:center">
         <?php
         if ($cards) {
             foreach ($cards as $card) {
                 ?>
                 <tr class="woocommerce-orders-table__row order" id="<?php echo $card['id']; ?>">                    
                     <td class="woocommerce-orders-table__cell ">
-                        <?php echo $card['name'] ?>
+                        *****<?php echo $card['last4'] ?>
                     </td>
                     <td class="woocommerce-orders-table__cell ">
-                        <?php echo $card['expires'] ?>
+                    <?php 
+
+                            if ($card['brand'] !== 'unknown') {
+                                $imagefile = esc_url(plugins_url('paggi-plugin-woocommerce-ecommerce/assets/images/cards/'.$card['brand'].'.svg','paggi-plugin-woocommerce-ecommerce'));
+                                echo "<img style='display: initial' src='".$imagefile."'>";
+
+                            } else {
+                                echo 'unknown (CHANGE)';
+                            }
+                        ?>  
                     </td>
                     <td class="woocommerce-orders-table__cell ">
-                        <?php echo $card['brand'] ?>
-                    </td>
-                    <td class="woocommerce-orders-table__cell ">
-                        <?php echo $card['last4'] ?>
-                    </td>
-                    <td class="woocommerce-orders-table__cell ">
-                        <input type="button" class="woocommerce-Button button" name="remove_card" onclick="delcard('<?php echo $card['id']; ?>')" 
+                        <input type="button" class="woocommerce-Button button" name="remove_card" onclick="delcard('<?php echo $card['id'];?>')"
                                value=" <?php _e('Remove Card', 'woocommerce-paggi'); ?>">
                     </td>
                 </tr>
@@ -50,33 +53,37 @@
         </tr>
     </tbody>
 </table>
-<input type="button" class="woocommerce-Button button" name="add_card" onclick="addcard()" value=" <?php _e('New Card', 'woocommerce-paggi'); ?>">
-<br/>
-<div class="ccdiv hide" id="ccdiv">
-    <form id="card_register" method="POST">
-        <div class="row">
-            <div class="col-md-6">
-                <div id="card-wrapper"></div><br/>
-                <div class="row" >
-                    <input placeholder="<?php _e('Card number', 'woocommerce-paggi'); ?> " type="tel" name = "cc_number"id="cc_number" class="cc required" size="20" >
+<?php if (!isset($current_customer['billing_cpf']) || !isset($current_customer['billing_cnpj'])) { ?>
+<?php } else { ?>    
+    <input type="button" class="woocommerce-Button button" name="add_card" onclick="addcard()" value=" <?php _e('New Card', 'woocommerce-paggi'); ?>">
+    <br/>
+    <div class="ccdiv hide" id="ccdiv">
+        <form id="card_register" method="POST">
+            <div class="row">
+                <div class="col-md-6">
+                    <div id="card-wrapper"></div><br/>
+                    <div class="row" >
+                        <input placeholder="<?php _e('Card number', 'woocommerce-paggi'); ?> " type="tel" name = "cc_number"id="cc_number" class="cc required" size="20" >
+                    </div>
+                    <div class="row">
+                        <input placeholder="<?php _e('Full name', 'woocommerce-paggi'); ?> " type="text" name = "cc_name" id="cc_name" class="cc required" size="20">
+                    </div>
+                    <div class="row">
+                        <input placeholder="<?php _e('MM/YY', 'woocommerce-paggi'); ?> " type="tel" name = "cc_expiry" id="cc_expiry" class="cc required" size="10">
+                    </div>
+                    <div class="row">
+                        <input placeholder="<?php _e('CVC', 'woocommerce-paggi'); ?> " type="tel" name = "cc_cvc" id="cc_cvc" class="cc required" size="10">
+                    </div>
+                    <div class="row">
+                        <input id="card_type" name="card_type" type="hidden">
+                    </div>
                 </div>
-                <div class="row">
-                    <input placeholder="<?php _e('Full name', 'woocommerce-paggi'); ?> " type="text" name = "cc_name" id="cc_name" class="cc required" size="20">
-                </div>
-                <div class="row">
-                    <input placeholder="<?php _e('MM/YY', 'woocommerce-paggi'); ?> " type="tel" name = "cc_expiry" id="cc_expiry" class="cc required" size="10">
-                </div>
-                <div class="row">
-                    <input placeholder="<?php _e('CVC', 'woocommerce-paggi'); ?> " type="tel" name = "cc_cvc" id="cc_cvc" class="cc required" size="10">
-                </div>
-                <div class="row">
-                    <input id="card_type" name="card_type" type="hidden">
-                </div>
+                <input type="submit" class="submit" value="<?php _e('Register Card', 'woocommerce-paggi'); ?>" />
             </div>
-            <input type="submit" class="submit" value="<?php _e('Register Card', 'woocommerce-paggi'); ?>" />
-        </div>
-    </form>
-</div>
+        </form>
+    </div>
+   
+<?php } ?> 
 <div class="progressbar">
 </div>
 <script>
@@ -112,7 +119,7 @@
             dataType: "json",
             success: function (response) {
                 jQuery(".progressbar").hide();
-                if (response.code == '200') {
+                if (response.code == '204') {
                     jQuery('#error_msg').addClass('hide');
                     jQuery('#success_msg').removeClass('hide').html(response.message);
                     jQuery($id_class).addClass('hide');

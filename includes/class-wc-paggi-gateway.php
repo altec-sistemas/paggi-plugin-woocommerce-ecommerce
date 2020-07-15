@@ -77,11 +77,6 @@ class WC_Paggi_Gateway extends WC_Payment_Gateway {
                 'type' => 'text',
                 'description' => ('Id de identificação PAGGI'),
             ),
-            'general' => array(
-                'title' => __('General', 'woocommerce-paggi'),
-                'type' => 'title',
-                'description' => '',
-            ),
             'enabled' => array(
                 'title' => __('Habilitar / Desabilitar', 'woocommerce-paggi'),
                 'type' => 'checkbox',
@@ -99,7 +94,6 @@ class WC_Paggi_Gateway extends WC_Payment_Gateway {
                 'title' => __('Descrição', 'woocommerce-paggi'),
                 'type' => 'textarea',
                 'description' => __('Payment method description that the customer will see on your checkout.', 'woocommerce-paggi'),
-                'default' => __('Please remit payment to Store Name upon pickup or delivery.', 'woocommerce-paggi'),
                 'desc_tip' => true,
             ),
             'paggi_instructions' => array(
@@ -116,7 +110,7 @@ class WC_Paggi_Gateway extends WC_Payment_Gateway {
                 'default' => '',
             ),
             'installments' => array(
-                'title' => __('Parcelamentos', 'woocommerce-paggi'),
+                'title' => __('Configuração de Parcelamentos', 'woocommerce-paggi'),
                 'type' => 'title',
                 'description' => '',
             ),
@@ -180,7 +174,7 @@ class WC_Paggi_Gateway extends WC_Payment_Gateway {
                 ),
             ),
             'development' => array(
-                'title' => __('Desenvolvimento', 'woocommerce-paggi'),
+                'title' => __('Ambiente de Desenvolvimento', 'woocommerce-paggi'),
                 'type' => 'title',
                 'description' => '',
             ),
@@ -312,6 +306,7 @@ class WC_Paggi_Gateway extends WC_Payment_Gateway {
 
     public function get_installments_view($cart_total)
     {
+
         $return = array('1' => $cart_total);
         $installments = $cart_total / $this->smallest_installment;
         if ($installments > $this->max_installment) {

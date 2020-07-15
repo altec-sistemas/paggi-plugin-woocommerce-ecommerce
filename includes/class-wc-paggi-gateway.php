@@ -67,6 +67,11 @@ class WC_Paggi_Gateway extends WC_Payment_Gateway {
     public function init_form_fields() {
 
         $this->form_fields = apply_filters('wc_paggi_form_fields', array(
+            'general' => array(
+                'title' => __('Configurações Gerais', 'woocommerce-paggi'),
+                'type' => 'title',
+                'description' => '',
+            ),
             'partner_id' => array(
                 'title' => __('ID PAGGI', 'woocommerce-paggi'),
                 'type' => 'text',

@@ -2,7 +2,7 @@
 
 /*
   Plugin Name: Paggi for WooCommerce
-  Plugin URI: http://www.paggi.com
+  Plugin URI: https://github.com/altec-sistemas/paggi-plugin-woocommerce-ecommerce
   Description: Includes Paggi as a payment gateway to WooCommerce
   Version: 1.0.0
   Author: Paggi

@@ -66,10 +66,10 @@ Segue as opcões disponiveis:
   ![Alt text](assets/images/cards/screenshots/conf-geral.png?raw=true)
 
  2. Configuração de parcelamentos:
-    ![Alt text](assets/images/cards/screenshots/paggi_checkout.png?raw=true)
+  ![Alt text](assets/images/cards/screenshots/paggi_checkout.png?raw=true)
 
  3. Checkout Pagamento PAGGI:
-   ![Alt text](assets/images/cards/screenshots/parcelamento.png?raw=true)
+  ![Alt text](assets/images/cards/screenshots/parcelamento.png?raw=true)
 
 
 
